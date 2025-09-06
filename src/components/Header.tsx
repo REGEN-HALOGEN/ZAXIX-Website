@@ -38,7 +38,7 @@ const Header = () => {
             <div className="flex items-center space-x-2">
               <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center font-bold text-primary-foreground text-xl">Z</div>
               <div>
-                <h1 className="text-2xl font-bold text-primary">ZAXIS</h1>
+                <h1 className="text-2xl font-bold text-primary">ZAXIX</h1>
                 <p className="text-xs text-muted-foreground -mt-1">Pharma Solutions</p>
               </div>
             </div>

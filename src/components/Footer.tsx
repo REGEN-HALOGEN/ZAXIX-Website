@@ -14,7 +14,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
           <div className="lg:col-span-4 space-y-6">
-            <h3 className="text-2xl font-bold">ZAXIS</h3>
+            <h3 className="text-2xl font-bold">ZAXIX</h3>
             <p className="text-muted-foreground max-w-md">
               Advanced Pharmaceutical Manufacturing Solutions driving innovation and efficiency in global healthcare.
             </p>
@@ -54,7 +54,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-16 pt-8 border-t border-border/50 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} ZAXIS Pharma Solutions. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} ZAXIX Pharma Solutions. All rights reserved.</p>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <Link href="#privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
             <Link href="#terms" className="hover:text-primary transition-colors">Terms of Service</Link>

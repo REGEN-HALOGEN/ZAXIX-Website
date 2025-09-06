@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ZAXIS - Pharmaceutical Manufacturing Solutions",
+  title: "ZAXIX - Pharmaceutical Manufacturing Solutions",
   description: "Advanced pharmaceutical machinery solutions trusted by leading companies worldwide. Experience innovation, reliability, and excellence in every product we deliver.",
 };
 
