@@ -1,11 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 
-const solutionsLinks = ["Tablet Manufacturing", "Capsule Equipment", "Liquid Processing", "Processing Equipment"];
-const servicesLinks = ["Installation", "Maintenance", "Consultation", "Training"];
-const companyLinks = ["About Us", "Contact", "Catalogue", "Careers"];
+const solutionsLinks = ["Home", "Systems", "About", "Careers", "Contact"];
+const servicesLinks: string[] = [];
+const companyLinks: string[] = [];
 
 const Footer = () => {
   return (
@@ -14,30 +15,26 @@ const Footer = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
           <div className="lg:col-span-4 space-y-6">
-            <h3 className="text-2xl font-bold">ZAXIX</h3>
-            <p className="text-muted-foreground max-w-md">
-              Advanced Pharmaceutical Manufacturing Solutions driving innovation and efficiency in global healthcare.
-            </p>
-            <div className="flex space-x-4">
-              <div className="text-center">
-                <p className="font-bold text-lg">25+</p>
-                <p className="text-sm text-muted-foreground">Years</p>
-              </div>
-              <div className="text-center">
-                <p className="font-bold text-lg">50+</p>
-                <p className="text-sm text-muted-foreground">Countries</p>
-              </div>
-              <div className="text-center">
-                <p className="font-bold text-lg">1000+</p>
-                <p className="text-sm text-muted-foreground">Projects</p>
-              </div>
+            <div className="flex items-center gap-2">
+              <Image
+                src="/logo.svg"
+                alt="Z AXIS"
+                width={48}
+                height={48}
+                className="w-12 h-12 object-contain -mr-1"
+                unoptimized
+              />
+              <h3 className="text-2xl font-bold">Z AXIS Pharmachine Concepts</h3>
             </div>
+            <p className="text-muted-foreground max-w-md">
+              Next-edge pharmaceutical processing & packaging systems with a Pharma 4.0, sterile, compliant, automation-first philosophy.
+            </p>
           </div>
 
           <div className="lg:col-span-5 grid grid-cols-2 md:grid-cols-3 gap-8">
-            <FooterLinkGroup title="Solutions" links={solutionsLinks} />
-            <FooterLinkGroup title="Services" links={servicesLinks} />
-            <FooterLinkGroup title="Company" links={companyLinks} />
+            <FooterLinkGroup title="Sections" links={solutionsLinks} />
+            <div />
+            <div />
           </div>
 
           <div className="lg:col-span-3 space-y-4">
@@ -54,7 +51,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-16 pt-8 border-t border-border/50 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} ZAXIX Pharma Solutions. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Z AXIS Pharmachine Concepts. All rights reserved.</p>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <Link href="#privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
             <Link href="#terms" className="hover:text-primary transition-colors">Terms of Service</Link>

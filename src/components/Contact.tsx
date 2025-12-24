@@ -12,17 +12,26 @@ const contactMethods = [
   {
     icon: <MapPin className="h-6 w-6 text-primary" />,
     title: "Visit Us",
-    lines: ["Plot No. 45, Industrial Estate", "Andheri (E), Mumbai - 400099", "Maharashtra, India"],
+    lines: [
+      "A-1006, Titanium City Centre",
+      "Prahladnagar Satellite, Ahmedabad – 380015",
+      "India",
+    ],
   },
   {
     icon: <Phone className="h-6 w-6 text-primary" />,
     title: "Call Us",
-    lines: ["+91 22 2685 7890", "+91 98765 43210"],
+    lines: ["+91 79 45928496", "+91 8200780207", "+91 9664675274"],
   },
   {
     icon: <Mail className="h-6 w-6 text-primary" />,
     title: "Email Us",
-    lines: ["info@zaxixpharma.com", "sales@zaxixpharma.com"],
+    lines: [
+      "zaxispharmachine@gmail.com",
+      "zaxispro1@gmail.com",
+      "vikram@zaxispharmachine.com",
+      "Website: www.zaxispharmchine.com",
+    ],
   },
 ];
 
@@ -56,11 +65,10 @@ const Contact = () => {
             <div>
               <Badge>Get In Touch</Badge>
               <h2 className="text-3xl lg:text-4xl font-bold tracking-tighter mt-2 mb-4">
-                Ready to Transform Your Manufacturing?
+                Contact Z AXIS
               </h2>
               <p className="text-lg text-muted-foreground">
-                Connect with our experts to discuss your pharmaceutical manufacturing needs 
-                and discover how we can optimize your operations.
+                Share your requirements for sterile processing, fill-finish, packaging, containment, or sterilization systems.
               </p>
             </div>
             

@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { motion } from 'framer-motion';
 
 interface QuoteModalProps {
   isOpen: boolean;
@@ -53,10 +54,9 @@ export const QuoteModal = ({ isOpen, onOpenChange }: QuoteModalProps) => {
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="tablet">Tablet Manufacturing</SelectItem>
-                  <SelectItem value="capsule">Capsule Equipment</SelectItem>
-                  <SelectItem value="liquid">Liquid Processing</SelectItem>
-                  <SelectItem value="processing">Processing Equipment</SelectItem>
+                  <SelectItem value="processing">Sterile & Liquid Processing</SelectItem>
+                  <SelectItem value="fill-finish">Fill-Finish & Packaging</SelectItem>
+                  <SelectItem value="sterile-support">Sterile Support (Containment / Dry Heat)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -68,9 +68,13 @@ export const QuoteModal = ({ isOpen, onOpenChange }: QuoteModalProps) => {
         </form>
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="secondary">Cancel</Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button type="button" variant="secondary">Cancel</Button>
+            </motion.div>
           </DialogClose>
-          <Button type="submit">Submit Request</Button>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button type="submit">Submit Request</Button>
+          </motion.div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -115,9 +119,13 @@ export const InquiryModal = ({ isOpen, onOpenChange, productName }: InquiryModal
         </form>
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="secondary">Cancel</Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button type="button" variant="secondary">Cancel</Button>
+            </motion.div>
           </DialogClose>
-          <Button type="submit">Send Inquiry</Button>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button type="submit">Send Inquiry</Button>
+          </motion.div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -1,51 +1,148 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
 import { QuoteModal } from './Modals';
+import { motion } from 'framer-motion';
+import ScrollingImages from './ScrollingImages';
+
+const usePrefersReducedMotion = () => {
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    if (!media) return;
+
+    setReduced(media.matches);
+    const onChange = (e: MediaQueryListEvent) => setReduced(e.matches);
+
+    if (typeof media.addEventListener === 'function') {
+      media.addEventListener('change', onChange);
+      return () => media.removeEventListener('change', onChange);
+    }
+
+    // Safari fallback
+    media.addListener(onChange);
+    return () => media.removeListener(onChange);
+  }, []);
+
+  return reduced;
+};
+
+const splitGraphemes = (text: string) => {
+  try {
+    // Segment by user-perceived characters to avoid breaking conjuncts.
+    const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
+    return Array.from(segmenter.segment(text), (s) => s.segment);
+  } catch {
+    return Array.from(text);
+  }
+};
 
 const Hero = () => {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  const sanskritText =
+    'यन्त्राणि देवतासदृशानि, यतः प्राणरक्षा भवति। औषधं यथोचितं रक्ष्यते, तेन लोकः सुखी भवेत्॥';
+
+  const sanskritGraphemes = useMemo(() => splitGraphemes(sanskritText), [sanskritText]);
+  const [typedCount, setTypedCount] = useState(prefersReducedMotion ? sanskritGraphemes.length : 0);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setTypedCount(sanskritGraphemes.length);
+      return;
+    }
+
+    setTypedCount(0);
+    const interval = window.setInterval(() => {
+      setTypedCount((c) => {
+        if (c >= sanskritGraphemes.length) return c;
+        return c + 1;
+      });
+    }, 60);
+
+    return () => window.clearInterval(interval);
+  }, [prefersReducedMotion, sanskritGraphemes.length]);
+
+  const typedSanskrit = prefersReducedMotion
+    ? sanskritText
+    : sanskritGraphemes.slice(0, typedCount).join('');
+
+  const scrollingImages = useMemo(
+    () => [
+      { src: '/ScrollingImg/Picture1.jpg', alt: 'Showcase image 1' },
+      { src: '/ScrollingImg/Picture2.png', alt: 'Showcase image 2' },
+      { src: '/ScrollingImg/Picture3.jpg', alt: 'Showcase image 3' },
+    ],
+    []
+  );
+
   return (
     <>
-      <section id="home" className="relative bg-background pt-32 pb-20 lg:pt-48 lg:pb-32">
+      <section id="home" className="relative bg-background bg-aura pt-0 pb-16 lg:pb-24">
+        <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] pt-20 mb-10">
+          <ScrollingImages images={scrollingImages} speedMs={26000} />
+        </div>
+
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-block bg-primary/10 text-primary font-semibold px-4 py-1 rounded-full text-sm mb-4">
-              🚀 Industry Leader Since 1998
+            <div 
+              className="inline-block bg-primary/10 text-primary font-semibold px-4 py-1 rounded-full text-sm mb-4"
+            >
+              Pharma 4.0 | Sterile | Compliant | Automation-first
             </div>
-            <h1 className="text-4xl lg:text-6xl font-bold tracking-tighter mb-6">
-              <span className="block">Transforming</span>
-              <span className="text-primary block">Pharmaceutical Manufacturing</span>
-              <span className="block">with Precision Technology</span>
+            <h1 
+              className="text-4xl lg:text-6xl font-bold tracking-tighter leading-tight mb-4"
+            >
+              <span className="block">WELCOME TO Z AXIS</span>
             </h1>
-            <p className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Cutting-edge pharmaceutical machinery solutions trusted by leading companies worldwide. 
-              Experience innovation, reliability, and excellence in every product we deliver.
+            <p className="text-primary font-bold leading-relaxed tracking-wide text-2xl sm:text-3xl lg:text-4xl max-w-5xl mx-auto mb-8">
+              <span className="sr-only">{sanskritText}</span>
+              <span aria-hidden="true">
+                {typedSanskrit}
+                {!prefersReducedMotion && typedCount < sanskritGraphemes.length && (
+                  <span className="inline-block w-[0.6ch] animate-pulse">|</span>
+                )}
+              </span>
             </p>
-            <div className="flex justify-center items-center space-x-4 mb-12">
+            <p 
+              className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-8"
+            >
+              The machines are like divine aids, for they safeguard life. By protecting medicines appropriately, they bring well-being to the world.
+            </p>
+            <div 
+              className="flex justify-center items-center space-x-4 mb-12"
+            >
               <div className="text-center">
-                <p className="text-3xl font-bold">25+</p>
-                <p className="text-sm text-muted-foreground">Years</p>
+                <p className="text-3xl font-bold">20+</p>
+                <p className="text-sm text-muted-foreground">Years pharma expertise</p>
               </div>
               <div className="border-l h-10 border-border"></div>
               <div className="text-center">
-                <p className="text-3xl font-bold">50+</p>
-                <p className="text-sm text-muted-foreground">Countries</p>
+                <p className="text-3xl font-bold">Sterile</p>
+                <p className="text-sm text-muted-foreground">Processing focus</p>
               </div>
               <div className="border-l h-10 border-border"></div>
               <div className="text-center">
-                <p className="text-3xl font-bold">1000+</p>
-                <p className="text-sm text-muted-foreground">Projects</p>
+                <p className="text-3xl font-bold">Compliant</p>
+                <p className="text-sm text-muted-foreground">GMP / EU Annex 1 ready</p>
               </div>
             </div>
-            <div className="flex justify-center space-x-4">
-              <Button size="lg" onClick={() => setIsQuoteModalOpen(true)}>
-                Request Quote <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button size="lg" variant="outline">
-                Explore Products
-              </Button>
+            <div 
+              className="flex justify-center space-x-4"
+            >
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button size="lg" onClick={() => setIsQuoteModalOpen(true)}>
+                  Request Quote <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button size="lg" variant="outline" asChild>
+                  <a href="#systems">Explore Systems</a>
+                </Button>
+              </motion.div>
             </div>
           </div>
         </div>

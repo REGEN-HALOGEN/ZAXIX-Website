@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import * as React from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import StartupLoader from "@/components/StartupLoader";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -9,8 +10,57 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ZAXIX - Pharmaceutical Manufacturing Solutions",
-  description: "Advanced pharmaceutical machinery solutions trusted by leading companies worldwide. Experience innovation, reliability, and excellence in every product we deliver.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  title: {
+    default:
+      "Z AXIS Pharmachine Concepts – Pharmaceutical Processing & Packaging Systems",
+    template: "%s | Z AXIS Pharmachine Concepts",
+  },
+  description:
+    "Z AXIS Pharmachine Concepts (India): next-edge pharmaceutical processing & packaging systems with a Pharma 4.0, sterile, compliant, automation-first philosophy.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "Z AXIS Pharmachine Concepts",
+    title:
+      "Z AXIS Pharmachine Concepts – Pharmaceutical Processing & Packaging Systems",
+    description:
+      "Z AXIS Pharmachine Concepts (India): next-edge pharmaceutical processing & packaging systems with a Pharma 4.0, sterile, compliant, automation-first philosophy.",
+    images: [
+      {
+        url: "/logo.svg",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title:
+      "Z AXIS Pharmachine Concepts – Pharmaceutical Processing & Packaging Systems",
+    description:
+      "Z AXIS Pharmachine Concepts (India): next-edge pharmaceutical processing & packaging systems with a Pharma 4.0, sterile, compliant, automation-first philosophy.",
+    images: ["/logo.svg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  icons: {
+    icon: [{ url: "/logo.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/logo.svg", type: "image/svg+xml" }],
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+  },
 };
 
 export default function RootLayout({
@@ -23,6 +73,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} font-sans antialiased`}
       >
+        <StartupLoader />
         {children}
       </body>
     </html>
