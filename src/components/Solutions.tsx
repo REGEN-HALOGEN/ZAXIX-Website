@@ -1,32 +1,32 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Pill, TestTube, Cog } from 'lucide-react';
+import { Droplets, Package, ShieldCheck, Flame } from 'lucide-react';
 
 const solutions = [
   {
-    icon: <Pill className="h-8 w-8 text-primary" />,
-    title: "Tablet Manufacturing",
-    description: "High-precision tablet presses and coating systems for pharmaceutical excellence.",
-    tags: ["PLC Controlled", "FDA Compliant", "Multi-layer"],
+    icon: <Droplets className="h-8 w-8 text-primary" />,
+    title: "Sterile & Liquid Processing",
+    description: "Pharma 4.0 sterile processing systems and standard liquid processing for syrups, suspensions, ointments, and creams.",
+    tags: ["Pharma 4.0", "Sterile", "Quality & Safety"],
   },
   {
-    icon: <div className="h-8 w-8 text-primary">⚕️</div>, // Using emoji as fallback
-    title: "Capsule Equipment",
-    description: "Automated filling systems with precision dosing and quality control.",
-    tags: ["High Precision", "Auto Rejection", "Easy Cleaning"],
+    icon: <Package className="h-8 w-8 text-primary" />,
+    title: "Fill-Finish & Packaging",
+    description: "Support for PFS, cartridges, vials, ampoules, nasal sprays, eye/ear drops, syrups & suspensions, and ointments & creams.",
+    tags: ["PFS", "Cartridges", "Vials & Ampoules"],
   },
   {
-    icon: <TestTube className="h-8 w-8 text-primary" />,
-    title: "Liquid Processing",
-    description: "Complete liquid manufacturing and filling solutions with CIP systems.",
-    tags: ["316L Steel", "CIP System", "Vision Inspection"],
+    icon: <ShieldCheck className="h-8 w-8 text-primary" />,
+    title: "Aseptic Containment (ISOCLEAN)",
+    description: "Positive pressure isolators, biological safety cabinets, glove integrity testing, and contained transfer solutions.",
+    tags: ["Isolator", "BSC", "SBV / RTP"],
   },
   {
-    icon: <Cog className="h-8 w-8 text-primary" />,
-    title: "Processing Equipment",
-    description: "Advanced mixing, granulation, and drying solutions for optimal processing.",
-    tags: ["High Shear", "Energy Efficient", "Explosion-proof"],
+    icon: <Flame className="h-8 w-8 text-primary" />,
+    title: "Sterilization & Depyrogenation (VENERA)",
+    description: "CORE dry heat tunnels for validated dry heat sterilization and endotoxin reduction across multiple container formats.",
+    tags: ["Dry Heat", "Endotoxin Reduction", "EU Annex 1"],
   },
 ];
 
