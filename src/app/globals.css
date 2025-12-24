@@ -4,65 +4,68 @@
 
 @layer base {
   :root {
+    /* Warm, saffron-forward palette inspired by public/logo.svg */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 22 45% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 22 45% 12%;
  
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 22 45% 12%;
  
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Saffron / vermillion accent (logo orange ~ #FD6F0E) */
+    --primary: 27 98% 52%;
+    --primary-foreground: 0 0% 100%;
  
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 35 45% 93%;
+    --secondary-foreground: 22 45% 12%;
  
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 35 35% 92%;
+    --muted-foreground: 24 18% 38%;
  
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 35 55% 90%;
+    --accent-foreground: 22 45% 12%;
  
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 30 20% 86%;
+    --input: 30 20% 86%;
+    --ring: 27 98% 52%;
  
     --radius: 0.5rem;
   }
  
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Deep warm “temple night” dark mode */
+    --background: 24 30% 8%;
+    --foreground: 36 40% 96%;
  
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 24 28% 10%;
+    --card-foreground: 36 40% 96%;
  
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 24 28% 10%;
+    --popover-foreground: 36 40% 96%;
  
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 27 98% 55%;
+    --primary-foreground: 24 30% 8%;
  
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 24 20% 14%;
+    --secondary-foreground: 36 40% 96%;
  
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 24 18% 14%;
+    --muted-foreground: 35 18% 70%;
  
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 24 18% 16%;
+    --accent-foreground: 36 40% 96%;
  
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
  
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 24 16% 18%;
+    --input: 24 16% 18%;
+    --ring: 27 98% 55%;
   }
 }
  
@@ -73,6 +76,116 @@
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+    /* Subtle warm “aura” backdrop */
+    background-image:
+      radial-gradient(900px circle at 15% 10%, hsl(var(--primary) / 0.10), transparent 55%),
+      radial-gradient(800px circle at 85% 15%, hsl(var(--accent) / 0.35), transparent 60%),
+      radial-gradient(700px circle at 50% 90%, hsl(var(--primary) / 0.06), transparent 60%);
+    background-attachment: fixed;
   }
+}
+
+@layer utilities {
+  .bg-aura {
+    background-image:
+      radial-gradient(900px circle at 15% 20%, hsl(var(--primary) / 0.14), transparent 55%),
+      radial-gradient(800px circle at 85% 10%, hsl(var(--accent) / 0.35), transparent 60%);
+  }
+
+  .animate-blob {
+    animation: blob 10s ease-in-out infinite;
+  }
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+}
+
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(18px, -12px) scale(1.06);
+  }
+  66% {
+    transform: translate(-14px, 16px) scale(0.96);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-blob {
+    animation: none;
+  }
+}
+
+/* Startup loader (test tube filling) */
+.zax-startup-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  background: hsl(var(--background));
+  background-image:
+    radial-gradient(700px circle at 20% 15%, hsl(var(--primary) / 0.12), transparent 55%),
+    radial-gradient(650px circle at 80% 20%, hsl(var(--accent) / 0.35), transparent 60%);
+}
+
+.zax-startup-loader__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 22px 24px;
+  border-radius: calc(var(--radius) + 6px);
+  border: 1px solid hsl(var(--border) / 0.65);
+  background: hsl(var(--card) / 0.75);
+  backdrop-filter: blur(8px);
+}
+
+.zax-tube {
+  width: 180px;
+  height: 260px;
+}
+
+.zax-tube__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* Recolor the (blue) lab animation to match the site's saffron primary.
+     This is a visual filter applied to the canvas output, so it works even when
+     the Lottie file isn't authored with theme controls. */
+  filter: hue-rotate(150deg) saturate(1.6) brightness(1.08);
+}
+
+.dark .zax-tube__svg {
+  filter: hue-rotate(150deg) saturate(1.7) brightness(1.15);
+}
+
+.zax-startup-loader__text {
+  text-align: center;
+}
+
+.zax-startup-loader__brand {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.zax-startup-loader__sub {
+  font-size: 16px;
+  color: hsl(var(--muted-foreground));
+  margin-top: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* DotLottie animation will still render a frame; we just don't add extra motion here. */
 }
 
