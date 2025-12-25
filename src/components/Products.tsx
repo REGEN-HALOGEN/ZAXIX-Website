@@ -246,7 +246,7 @@ const Products = () => {
                   </div>
                   <div className="flex space-x-2">
                     <Button className="w-full" variant="outline" asChild>
-                      <a href="#contact">Request Details</a>
+                      <a href="#contact">More Info</a>
                     </Button>
                     <Button className="w-full" onClick={() => handleInquiry(product.title)}>Inquire Now</Button>
                   </div>

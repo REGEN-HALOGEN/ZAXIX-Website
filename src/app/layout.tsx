@@ -3,6 +3,7 @@ import * as React from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import StartupLoader from "@/components/StartupLoader";
+import SideContactBar from "@/components/SideContactBar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -74,6 +75,7 @@ export default function RootLayout({
         className={`${inter.variable} font-sans antialiased`}
       >
         <StartupLoader />
+        <SideContactBar />
         {children}
       </body>
     </html>

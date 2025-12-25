@@ -44,7 +44,7 @@ const Hero = () => {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   const sanskritText =
-    'यन्त्राणि देवतासदृशानि, यतः प्राणरक्षा भवति। औषधं यथोचितं रक्ष्यते, तेन लोकः सुखी भवेत्॥';
+    'यन्त्राणि देवतासदृशानि, यतः प्राणरक्षा भवति।\nऔषधं यथोचितं रक्ष्यते, तेन लोकः सुखी भवेत्॥';
 
   const sanskritGraphemes = useMemo(() => splitGraphemes(sanskritText), [sanskritText]);
   const [typedCount, setTypedCount] = useState(prefersReducedMotion ? sanskritGraphemes.length : 0);
@@ -70,11 +70,15 @@ const Hero = () => {
     ? sanskritText
     : sanskritGraphemes.slice(0, typedCount).join('');
 
+  // Split the typed text into two lines so we can force each line to stay on a single line
+  const typedLines = typedSanskrit.split('\n');
+
   const scrollingImages = useMemo(
     () => [
       { src: '/ScrollingImg/Picture1.jpg', alt: 'Showcase image 1' },
       { src: '/ScrollingImg/Picture2.png', alt: 'Showcase image 2' },
       { src: '/ScrollingImg/Picture3.jpg', alt: 'Showcase image 3' },
+      { src: '/ScrollingImg/Picture4.jpg', alt: 'Showcase image 4' },
     ],
     []
   );
@@ -87,28 +91,32 @@ const Hero = () => {
         </div>
 
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
+          <div className="max-w-6xl mx-auto text-center">
             <div 
               className="inline-block bg-primary/10 text-primary font-semibold px-4 py-1 rounded-full text-sm mb-4"
             >
               Pharma 4.0 | Sterile | Compliant | Automation-first
             </div>
-            <h1 
-              className="text-4xl lg:text-6xl font-bold tracking-tighter leading-tight mb-4"
+            <h1
+              className="text-4xl lg:text-6xl font-bold italic tracking-tighter leading-tight mb-4"
+              style={{ fontFamily: 'Verdana, Geneva, Tahoma, sans-serif' }}
             >
               <span className="block">WELCOME TO Z AXIS</span>
             </h1>
             <p className="text-primary font-bold leading-relaxed tracking-wide text-2xl sm:text-3xl lg:text-4xl max-w-5xl mx-auto mb-8">
               <span className="sr-only">{sanskritText}</span>
-              <span aria-hidden="true">
-                {typedSanskrit}
-                {!prefersReducedMotion && typedCount < sanskritGraphemes.length && (
-                  <span className="inline-block w-[0.6ch] animate-pulse">|</span>
-                )}
+              <span aria-hidden="true" className="block text-center mx-auto">
+                <span className="block whitespace-nowrap leading-tight text-center">{typedLines[0] ?? ''}</span>
+                <span className="block whitespace-nowrap leading-tight text-center">
+                  {typedLines[1] ?? ''}
+                  {!prefersReducedMotion && typedCount < sanskritGraphemes.length && (
+                    <span className="inline-block w-[0.6ch] animate-pulse">|</span>
+                  )}
+                </span>
               </span>
             </p>
             <p 
-              className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-8"
+              className="text-lg lg:text-xl text-muted-foreground max-w-4xl mx-auto mb-8 text-balance leading-relaxed"
             >
               The machines are like divine aids, for they safeguard life. By protecting medicines appropriately, they bring well-being to the world.
             </p>

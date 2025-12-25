@@ -4,9 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run generate-infra-manifest && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate-infra-manifest": "node scripts/generate-infra-manifest.js",
+    "check:infra-manifest": "node scripts/generate-infra-manifest.js",
+    "test:infra": "node scripts/test-infra.js",
+    "test:infra-images": "node scripts/test-infra-images.js",
+    "check:section-order": "node scripts/check-section-order.js"
   },
   "dependencies": {
     "@lottiefiles/dotlottie-react": "^0.17.10",
@@ -15,6 +20,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "framer-motion": "^12.23.26",
     "next": "13.5.4",
+    "nodemailer": "^7.0.12",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwind-merge": "^3.3.1"
@@ -22,6 +28,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/node": "^20",
+    "@types/nodemailer": "^7.0.4",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.16",
