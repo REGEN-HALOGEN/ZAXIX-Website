@@ -1,0 +1,27 @@
+{
+  "generatedAt": "2025-12-25T07:46:03.426Z",
+  "items": [
+    {
+      "type": "image",
+      "file": "ISCOCLEAN.jpg",
+      "url": "/Infra/ISCOCLEAN.jpg",
+      "name": "ISCOCLEAN",
+      "ext": ".jpg"
+    },
+    {
+      "type": "video",
+      "file": "office.mp4",
+      "url": "/Infra/office.mp4",
+      "name": "Office",
+      "ext": ".mp4",
+      "poster": null
+    },
+    {
+      "type": "image",
+      "file": "VENERA.jpg",
+      "url": "/Infra/VENERA.jpg",
+      "name": "VENERA",
+      "ext": ".jpg"
+    }
+  ]
+}

@@ -5,6 +5,9 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
+import dynamic from 'next/dynamic';
+
+const InfrastructureSection = dynamic(() => import('@/components/InfrastructureSection'), { ssr: false });
 
 export default function Home() {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -43,8 +46,10 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        <Services />
         <About />
+        <Services />
+        {/* Infrastructure section embedded after Systems */}
+        <InfrastructureSection />
         <Careers />
         <Contact />
       </main>
