@@ -203,7 +203,7 @@ const Contact = () => {
             {/* Google Maps */}
             <div className="mt-8 rounded-lg overflow-hidden border border-border/60 shadow-sm">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1000!2d72.52329214417888!3d23.012038050973594!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1703619567890"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2450.981942157549!2d72.52317070425913!3d23.01188994724082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e857b1e641f55%3A0x340942a1d8267e91!2sTitanium%20City%20Center%20-%20Corporate%20Offices!5e0!3m2!1sen!2sin!4v1766770228289!5m2!1sen!2sin"
                 width="100%"
                 height="250"
                 style={{ border: 0 }}
