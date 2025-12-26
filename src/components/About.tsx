@@ -97,7 +97,7 @@ const highlights = [
   {
     icon: <Target className="h-6 w-6 text-primary" />,
     title: "Focus",
-    description: "Next-edge pharmaceutical processing & packaging systems.",
+    description: "Next-edge pharmaceutical packaging systems.",
   },
   {
     icon: <Cpu className="h-6 w-6 text-primary" />,
