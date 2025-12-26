@@ -175,7 +175,7 @@ const Contact = () => {
               </span>
               <ScrollFloat
                 className="text-3xl md:text-4xl lg:text-5xl font-bold italic tracking-tight mb-4"
-                highlightWords={[{ word: 'Z', className: 'text-primary', style: { WebkitTextStroke: '1px #333', textShadow: '1px 1px 2px rgba(0,0,0,0.3)' } }]}
+                highlightWords={[{ word: 'Z', className: 'text-primary' }]}
               >
                 CONTACT Z AXIS
               </ScrollFloat>

@@ -143,10 +143,6 @@ const Hero = () => {
               <span className="block md:whitespace-nowrap text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl">
                 <span
                   className="text-primary"
-                  style={{
-                    WebkitTextStroke: '1px #333',
-                    textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
-                  }}
                 >Z</span> AXIS PHARMACHINE CONCEPTS (INDIA)
               </span>
             </motion.h1>

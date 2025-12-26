@@ -5,7 +5,7 @@ import { Linkedin, Instagram, Twitter, Youtube, Facebook } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 
-const solutionsLinks = ["Home", "Systems", "About", "Careers", "Contact"];
+const solutionsLinks = ["Home", "Systems", "About", "Infrastructure", "Media", "Careers", "Contact"];
 const servicesLinks: string[] = [];
 const companyLinks: string[] = [];
 
