@@ -89,16 +89,15 @@ const Hero = () => {
     <>
       <section id="home" className="relative bg-background bg-aura pt-0 pb-16 lg:pb-24">
         <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] pt-20 mb-10">
-          <ScrollingImages images={scrollingImages} speedMs={26000} />
+          <ScrollingImages
+            images={scrollingImages}
+            speedMs={26000}
+            ribbonText="Pharma 4.0 | Sterile | Compliant | Automation-first"
+          />
         </div>
 
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto text-center">
-            <div
-              className="inline-block bg-primary/10 text-primary font-semibold px-4 py-1 rounded-full text-sm mb-4"
-            >
-              Pharma 4.0 | Sterile | Compliant | Automation-first
-            </div>
             <motion.h1
               className="text-4xl lg:text-6xl font-bold italic tracking-tighter leading-tight mb-4"
               style={{ fontFamily: 'Verdana, Geneva, Tahoma, sans-serif' }}

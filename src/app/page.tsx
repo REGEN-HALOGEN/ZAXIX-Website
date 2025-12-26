@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
+import MediaSection from "@/components/MediaSection";
 import dynamic from 'next/dynamic';
 
 const InfrastructureSection = dynamic(() => import('@/components/InfrastructureSection'), { ssr: false });
@@ -50,6 +51,8 @@ export default function Home() {
         <Services />
         {/* Infrastructure section embedded after Systems */}
         <InfrastructureSection />
+        {/* Media section with Coming Soon */}
+        <MediaSection />
         <Careers />
         <Contact />
       </main>

@@ -116,11 +116,12 @@ const Services = () => {
                     key={product.title}
                     whileHover={{ y: -5 }}
                     transition={{ duration: 0.2 }}
+                    className="h-full"
                   >
                     <Card
-                      className="overflow-hidden flex flex-col transition-shadow hover:shadow-lg"
+                      className="overflow-hidden flex flex-col transition-shadow hover:shadow-lg h-full"
                     >
-                      <div className="relative h-56 sm:h-64 bg-background">
+                      <div className="relative h-56 sm:h-64 bg-background flex-shrink-0">
                         <Image
                           src={product.imageSrc ?? DEFAULT_PRODUCT_IMAGE_SRC}
                           alt={product.title}
@@ -134,11 +135,11 @@ const Services = () => {
                         </div>
                       </div>
 
-                      <CardHeader>
-                        <CardTitle className="text-base leading-snug">{product.title}</CardTitle>
+                      <CardHeader className="flex-grow">
+                        <CardTitle className="text-base leading-snug line-clamp-3">{product.title}</CardTitle>
                       </CardHeader>
 
-                      <CardContent className="flex-grow flex items-end">
+                      <CardContent className="pt-0">
                         <Button
                           type="button"
                           className="w-full"

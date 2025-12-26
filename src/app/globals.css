@@ -74,6 +74,19 @@
     border-color: hsl(var(--border));
   }
 
+  html {
+    /* Hide scrollbar but keep scroll functionality */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+  }
+
+  html::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+  }
+
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));

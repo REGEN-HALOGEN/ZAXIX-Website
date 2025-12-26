@@ -27,8 +27,8 @@ const ScrollFloat = ({
     as: Component = 'h2',
     animationDuration = 0.8,
     ease = 'back.out(1.7)',
-    scrollStart = 'top bottom-=15%',
-    scrollEnd = 'bottom top+=15%',
+    scrollStart = 'top 85%',
+    scrollEnd = 'bottom 20%',
     stagger = 0.04,
     highlightWords = [],
 }: ScrollFloatProps) => {

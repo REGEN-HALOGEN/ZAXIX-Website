@@ -13,18 +13,25 @@ const Footer = () => {
     <footer className="bg-secondary text-secondary-foreground">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
+
           <div className="lg:col-span-4 space-y-6">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center">
               <Image
-                src="/logo.svg"
-                alt="Z AXIS"
-                width={48}
-                height={48}
-                className="w-12 h-12 object-contain -mr-1"
+                src="/logo_header.svg"
+                alt="Z AXIS Pharmachine Concepts"
+                width={200}
+                height={55}
+                className="h-12 w-auto object-contain dark:hidden"
                 unoptimized
               />
-              <h3 className="text-2xl font-bold">Z AXIS Pharmachine Concepts</h3>
+              <Image
+                src="/logo_header-light.svg"
+                alt="Z AXIS Pharmachine Concepts"
+                width={200}
+                height={55}
+                className="h-12 w-auto object-contain hidden dark:block"
+                unoptimized
+              />
             </div>
             <p className="text-muted-foreground max-w-md">
               Next-edge pharmaceutical processing & packaging systems with a Pharma 4.0, sterile, compliant, automation-first philosophy.
@@ -43,7 +50,7 @@ const Footer = () => {
               Get the latest updates on new products and upcoming events.
             </p>
             <div className="flex w-full max-w-sm items-center space-x-2">
-              <Input type="email" placeholder="Email" className="bg-background/50"/>
+              <Input type="email" placeholder="Email" className="bg-background/50" />
               <Button type="submit">Subscribe</Button>
             </div>
           </div>

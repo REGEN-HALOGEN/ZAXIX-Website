@@ -79,6 +79,15 @@ const About = () => {
             </div>
           </div>
 
+          {/* Peaceful Image */}
+          <div className="w-full mb-12 flex justify-center">
+            <img
+              src="/peaceful.jpg"
+              alt="Peaceful environment"
+              className="w-full max-w-4xl h-auto rounded-2xl shadow-xl object-cover"
+            />
+          </div>
+
           {/* Company Description */}
           <div className="w-full mb-20 max-w-4xl mx-auto text-center">
             <p className="text-lg text-muted-foreground leading-relaxed">
@@ -125,7 +134,7 @@ const About = () => {
                     <CardHeader className="pb-2">
                       <div className="flex items-center gap-3">
                         <div className="p-2 bg-primary/10 rounded-full">{item.icon}</div>
-                        <CardTitle className="text-base">{item.title}</CardTitle>
+                        <CardTitle className="text-base whitespace-nowrap">{item.title}</CardTitle>
                       </div>
                     </CardHeader>
                     <CardContent>
@@ -156,7 +165,7 @@ const About = () => {
                     <CardHeader className="pb-2">
                       <div className="flex items-center gap-3">
                         <div className="p-2 bg-primary/10 rounded-full">{item.icon}</div>
-                        <CardTitle className="text-base">{item.title}</CardTitle>
+                        <CardTitle className="text-base whitespace-nowrap">{item.title}</CardTitle>
                       </div>
                     </CardHeader>
                     <CardContent>
@@ -297,7 +306,7 @@ const About = () => {
                   </div>
                   {/* Text Content */}
                   <div className="p-6 md:p-8 flex-1">
-                    <h4 className="text-xl font-semibold mb-4">Vikram & Team</h4>
+                    <h4 className="text-xl font-semibold mb-4">Vikram Yeolaker & Team</h4>
                     <div className="space-y-4">
                       <p className="text-muted-foreground leading-relaxed">
                         "While Vikram provides the strategic vision and drives the momentum of Z Axis Pharmachine Concepts India, our growth journey is fundamentally a team achievement. He leads a dedicated pack of engineers and innovators—experts whose collective precision, dedication, and problem-solving drive every single success story we write."
