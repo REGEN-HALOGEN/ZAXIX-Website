@@ -10,72 +10,75 @@
 
     --card: 0 0% 100%;
     --card-foreground: 22 45% 12%;
- 
+
     --popover: 0 0% 100%;
     --popover-foreground: 22 45% 12%;
- 
+
     /* Saffron / vermillion accent (logo orange ~ #FD6F0E) */
     --primary: 27 98% 52%;
     --primary-foreground: 0 0% 100%;
- 
+
     --secondary: 35 45% 93%;
     --secondary-foreground: 22 45% 12%;
- 
+
     --muted: 35 35% 92%;
     --muted-foreground: 24 18% 38%;
- 
+
     --accent: 35 55% 90%;
     --accent-foreground: 22 45% 12%;
- 
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 30 20% 86%;
     --input: 30 20% 86%;
     --ring: 27 98% 52%;
- 
+
     --radius: 0.5rem;
   }
- 
+
   .dark {
     /* Deep warm “temple night” dark mode */
     --background: 24 30% 8%;
     --foreground: 36 40% 96%;
- 
+
     --card: 24 28% 10%;
     --card-foreground: 36 40% 96%;
- 
+
     --popover: 24 28% 10%;
     --popover-foreground: 36 40% 96%;
- 
+
     --primary: 27 98% 55%;
     --primary-foreground: 24 30% 8%;
- 
+
     --secondary: 24 20% 14%;
     --secondary-foreground: 36 40% 96%;
- 
+
     --muted: 24 18% 14%;
     --muted-foreground: 35 18% 70%;
- 
+
     --accent: 24 18% 16%;
     --accent-foreground: 36 40% 96%;
- 
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
- 
+
     --border: 24 16% 18%;
     --input: 24 16% 18%;
     --ring: 27 98% 55%;
   }
 }
- 
+
 @layer base {
   * {
     border-color: hsl(var(--border));
   }
+
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-style: italic;
     /* Subtle warm “aura” backdrop */
     background-image:
       radial-gradient(900px circle at 15% 10%, hsl(var(--primary) / 0.10), transparent 55%),
@@ -95,9 +98,11 @@
   .animate-blob {
     animation: blob 10s ease-in-out infinite;
   }
+
   .animation-delay-2000 {
     animation-delay: 2s;
   }
+
   .animation-delay-4000 {
     animation-delay: 4s;
   }
@@ -107,12 +112,15 @@
   0% {
     transform: translate(0px, 0px) scale(1);
   }
+
   33% {
     transform: translate(18px, -12px) scale(1.06);
   }
+
   66% {
     transform: translate(-14px, 16px) scale(0.96);
   }
+
   100% {
     transform: translate(0px, 0px) scale(1);
   }
@@ -121,6 +129,76 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-blob {
     animation: none;
+  }
+}
+
+/* Animated Border Gradient */
+.animated-border {
+  position: relative;
+  background: hsl(var(--card));
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.animated-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: inherit;
+  background: linear-gradient(90deg,
+      hsl(var(--primary) / 0.3),
+      hsl(var(--primary) / 0.8),
+      hsl(var(--primary) / 0.3),
+      hsl(var(--primary) / 0.1));
+  background-size: 300% 100%;
+  animation: border-shimmer 4s ease-in-out infinite;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+@keyframes border-shimmer {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Animated Gradient Text */
+.gradient-text-animate {
+  background: linear-gradient(90deg,
+      hsl(27, 98%, 50%),
+      hsl(45, 100%, 50%),
+      hsl(35, 100%, 55%),
+      hsl(15, 90%, 45%),
+      hsl(27, 98%, 50%));
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-scroll 3s ease-in-out infinite;
+}
+
+@keyframes gradient-scroll {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
   }
 }
 
@@ -188,4 +266,3 @@
 @media (prefers-reduced-motion: reduce) {
   /* DotLottie animation will still render a frame; we just don't add extra motion here. */
 }
-

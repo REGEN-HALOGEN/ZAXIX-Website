@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Phone, Mail, Send } from 'lucide-react';
 import { SYSTEMS } from '@/lib/zaxis-systems';
+import ScrollFloat from '@/components/ui/ScrollFloat';
 
 const contactMethods = [
   {
@@ -69,6 +70,13 @@ const Contact = () => {
       const digits = (value || '').replace(/\D/g, '').slice(0, 10);
       setFormData(prev => ({ ...prev, phone: digits }));
       setFormErrors(prev => ({ ...prev, phone: undefined }));
+      return;
+    }
+
+    // Reset system selection when product segment changes
+    if (name === 'productSegment') {
+      setFormData(prev => ({ ...prev, productSegment: value, system: '' }));
+      setFormErrors(prev => ({ ...prev, productSegment: undefined, system: undefined }));
       return;
     }
 
@@ -142,22 +150,35 @@ const Contact = () => {
   };
 
   const productSegments = [
-    'ZAxis Pro',
-    'ZAxis Pre',
-    'ZAxis Core',
-    'Other',
+    { label: 'ZAxis Pro', key: 'pro' as const },
+    { label: 'ZAxis Pre', key: 'pre' as const },
+    { label: 'ZAxis Core', key: 'core' as const },
   ];
 
+  // Get products based on selected segment
+  const getAvailableProducts = () => {
+    const segment = productSegments.find(s => s.label === formData.productSegment);
+    if (!segment) return [];
+    return SYSTEMS[segment.key]?.products ?? [];
+  };
+
+  const availableProducts = useMemo(() => getAvailableProducts(), [formData.productSegment]);
+
   return (
-    <section id="contact" className="py-20 lg:py-32 bg-muted/50">
+    <section id="contact" className="py-16 lg:py-24 bg-muted/50">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           <div className="space-y-8">
-            <div>
-              <Badge>Get In Touch</Badge>
-              <h2 className="text-3xl lg:text-4xl font-bold tracking-tighter mt-2 mb-4">
-                Contact Z AXIS
-              </h2>
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <span className="inline-block text-sm font-semibold tracking-widest text-primary uppercase mb-4">
+                Get In Touch
+              </span>
+              <ScrollFloat
+                className="text-3xl md:text-4xl lg:text-5xl font-bold italic tracking-tight mb-4"
+                highlightWords={[{ word: 'CONTACT', className: 'text-primary' }]}
+              >
+                CONTACT Z AXIS
+              </ScrollFloat>
               <p className="text-lg text-muted-foreground">
                 Share your requirements for sterile processing, fill-finish, packaging, containment, or sterilization systems.
               </p>
@@ -262,13 +283,13 @@ const Contact = () => {
                       name="productSegment"
                       value={formData.productSegment}
                       onChange={handleChange}
-                      className="h-10 w-full rounded-md border border-input px-3 py-2 text-base"
+                      className="h-10 w-full rounded-md border border-input bg-background text-foreground px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-ring"
                       aria-required
                       required
                     >
                       <option value="">Select a product segment</option>
                       {productSegments.map((s) => (
-                        <option key={s} value={s}>{s}</option>
+                        <option key={s.key} value={s.label}>{s.label}</option>
                       ))}
                     </select>
                     {formErrors.productSegment && <p className="text-sm text-destructive mt-1">{formErrors.productSegment}</p>}
@@ -283,13 +304,13 @@ const Contact = () => {
                       name="system"
                       value={formData.system}
                       onChange={handleChange}
-                      className="h-10 w-full rounded-md border border-input px-3 py-2 text-base"
+                      className="h-10 w-full rounded-md border border-input bg-background text-foreground px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-ring"
                       aria-required
                       required
                     >
-                      <option value="">Select a system</option>
-                      {Object.keys(SYSTEMS).map((k) => (
-                        <option key={k} value={k}>{(SYSTEMS as any)[k].title}</option>
+                      <option value="">Select a machine</option>
+                      {availableProducts.map((product, idx) => (
+                        <option key={idx} value={product.title}>{product.title}</option>
                       ))}
                     </select>
                     {formErrors.system && <p className="text-sm text-destructive mt-1">{formErrors.system}</p>}

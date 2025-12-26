@@ -1,7 +1,10 @@
+'use client';
+
 import React from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ScrollFloat from '@/components/ui/ScrollFloat';
 
 const pillars = [
   {
@@ -20,13 +23,18 @@ const pillars = [
 
 const Careers = () => {
   return (
-    <section id="careers" className="py-20 lg:py-32 bg-secondary/50">
+    <section id="careers" className="py-16 lg:py-24 bg-secondary/50">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <Badge>Careers</Badge>
-          <h2 className="text-3xl lg:text-4xl font-bold tracking-tighter mt-2 mb-4">
-            Careers at Z Axis Pharmachine Concepts India
-          </h2>
+          <span className="inline-block text-sm font-semibold tracking-widest text-primary uppercase mb-4">
+            Join Our Team
+          </span>
+          <ScrollFloat
+            className="text-3xl md:text-4xl lg:text-5xl font-bold italic tracking-tight mb-4"
+            highlightWords={[{ word: 'CAREERS', className: 'text-primary' }]}
+          >
+            CAREERS AT Z AXIS
+          </ScrollFloat>
           <p className="text-lg text-muted-foreground">
             Beyond Family: We hire friends, builders, and driven innovators.
           </p>

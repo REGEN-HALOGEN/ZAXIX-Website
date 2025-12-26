@@ -4,6 +4,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Button } from './ui/button';
 import { Dialog, DialogContent } from './ui/dialog';
 import { ArrowLeft, ArrowRight, X } from 'lucide-react';
+import ScrollFloat from '@/components/ui/ScrollFloat';
 
 type InfraItem = {
   type: 'image' | 'video';
@@ -71,10 +72,22 @@ export default function InfrastructureSection() {
     return () => window.removeEventListener('keydown', onKey);
   }, [open, prev, next]);
   return (
-    <section id="infrastructure" aria-labelledby="infrastructure-heading" ref={(el) => { containerRef.current = el; }} className="py-20">
+    <section id="infrastructure" aria-labelledby="infrastructure-heading" ref={(el) => { containerRef.current = el; }} className="py-16 lg:py-24">
       <div className="container mx-auto px-4">
-        <h2 id="infrastructure-heading" className="text-3xl font-extrabold mb-4">Infrastructure</h2>
-        <p className="text-muted-foreground mb-6">A showcase of infrastructure photos and videos used across our site.</p>
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <span className="inline-block text-sm font-semibold tracking-widest text-primary uppercase mb-4">
+            Our Facilities
+          </span>
+          <ScrollFloat
+            className="text-3xl md:text-4xl lg:text-5xl font-bold italic tracking-tight mb-4"
+            highlightWords={[{ word: 'INFRASTRUCTURE', className: 'text-primary' }]}
+          >
+            INFRASTRUCTURE
+          </ScrollFloat>
+          <p className="text-lg text-muted-foreground">
+            A showcase of our state-of-the-art facilities and manufacturing capabilities.
+          </p>
+        </div>
 
         {loading ? (
           <div>Loading...</div>

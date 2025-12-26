@@ -47,7 +47,7 @@ const ScrollingImages = ({ images, speedMs = 22000 }: ScrollingImagesProps) => {
                 alt={img.alt}
                 fill
                 sizes="(min-width: 1024px) 288px, (min-width: 640px) 256px, 224px"
-                className="object-cover opacity-40 dark:opacity-30 brightness-110 dark:brightness-125 mix-blend-multiply dark:mix-blend-screen"
+                className="object-cover opacity-60 dark:opacity-50 brightness-100 dark:brightness-110"
                 unoptimized
               />
             </div>
