@@ -9,7 +9,7 @@ import { GlareCard } from '@/components/ui/glare-card';
 // Team member data
 const teamMembers = [
   {
-    name: "Vikram Yeolaker",
+    name: "Vikram",
     image: "/founder.png",
     alt: "Vikram - Founder of Z Axis Pharmachine",
     paragraphs: [
@@ -18,7 +18,7 @@ const teamMembers = [
     ]
   },
   {
-    name: "Meeraj Yeolaker",
+    name: "Meeraaj",
     image: "/meeraj.jpeg",
     alt: "Meeraj Yeolaker - Z Axis Pharmachine",
     paragraphs: [
@@ -28,29 +28,28 @@ const teamMembers = [
   }
 ];
 
-// Team Card Component - Shows both members
+// Team Card Component - Shows both members with profile picture style
 const TeamCard = () => {
   return (
-    <Card className="border-border/60 bg-background/50 shadow-sm max-w-6xl mx-auto overflow-hidden">
-      <CardContent className="p-0">
-        <div className="grid grid-cols-1 md:grid-cols-2">
-          {teamMembers.map((member, index) => (
-            <div
-              key={member.name}
-              className={`flex flex-col ${index === 0 ? 'md:border-r border-border/60' : ''}`}
-            >
-              {/* Image */}
-              <div className="aspect-[4/3] overflow-hidden bg-background/30">
-                <img
-                  src={member.image}
-                  alt={member.alt}
-                  className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
-                />
+    <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+      {teamMembers.map((member) => (
+        <Card key={member.name} className="border-border/60 bg-background/50 shadow-sm overflow-hidden">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+              {/* Profile Picture */}
+              <div className="flex-shrink-0">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-primary/20 shadow-lg">
+                  <img
+                    src={member.image}
+                    alt={member.alt}
+                    className="w-full h-full object-cover object-center"
+                  />
+                </div>
               </div>
               {/* Text Content */}
-              <div className="p-6 md:p-8 flex-1">
-                <h4 className="text-xl font-semibold mb-4">{member.name}</h4>
-                <div className="space-y-3">
+              <div className="flex-1 text-center sm:text-left">
+                <h4 className="text-xl font-semibold mb-3 text-foreground">{member.name}</h4>
+                <div className="space-y-2">
                   {member.paragraphs.map((text, idx) => (
                     <p key={idx} className="text-sm text-muted-foreground leading-relaxed">
                       {text}
@@ -59,10 +58,10 @@ const TeamCard = () => {
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
   );
 };
 
@@ -125,7 +124,7 @@ const About = () => {
             </span>
             <ScrollFloat
               className="text-4xl md:text-5xl lg:text-6xl font-bold italic tracking-tight mb-6"
-              highlightWords={[{ word: 'Z', className: 'text-primary', style: { WebkitTextStroke: '1px #333', textShadow: '1px 1px 2px rgba(0,0,0,0.3)' } }]}
+              highlightWords={[{ word: 'Z', className: 'text-primary' }]}
             >
               ABOUT Z AXIS
             </ScrollFloat>
@@ -167,12 +166,13 @@ const About = () => {
               <ScrollFloat
                 className="text-3xl md:text-4xl lg:text-5xl font-bold italic tracking-tight mb-4"
                 as="h3"
-                highlightWords={[{ word: 'Z', className: 'text-primary', style: { WebkitTextStroke: '1px #333', textShadow: '1px 1px 2px rgba(0,0,0,0.3)' } }]}
+                highlightWords={[{ word: 'Z', className: 'text-primary' }]}
               >
                 WHY Z AXIS?
               </ScrollFloat>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                In injectable filling machines, X & Y axes only position the nozzle — <strong className="text-foreground">Z-AXIS defines how the product is filled.</strong>
+                In injectable filling machines, X & Y axes only position the nozzle<br />
+                <strong className="text-foreground"><span className="text-primary">Z</span> AXIS defines how the product is filled.</strong>
               </p>
             </div>
 
@@ -348,7 +348,7 @@ const About = () => {
               <ScrollFloat
                 className="text-3xl md:text-4xl lg:text-5xl font-bold italic tracking-tight"
                 as="h3"
-                highlightWords={[{ word: 'Z', className: 'text-primary', style: { WebkitTextStroke: '1px #333', textShadow: '1px 1px 2px rgba(0,0,0,0.3)' } }]}
+                highlightWords={[{ word: 'Z', className: 'text-primary' }]}
               >
                 TEAM Z AXIS
               </ScrollFloat>

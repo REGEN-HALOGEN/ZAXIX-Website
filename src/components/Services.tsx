@@ -39,7 +39,7 @@ const Services = () => {
             </span>
             <ScrollFloat
               className="text-3xl md:text-4xl lg:text-5xl font-bold italic tracking-tight mb-4"
-              highlightWords={[{ word: 'Z', className: 'text-primary', style: { WebkitTextStroke: '1px #333', textShadow: '1px 1px 2px rgba(0,0,0,0.3)' } }]}
+              highlightWords={[{ word: 'Z', className: 'text-primary' }]}
             >
               Z AXIS SYSTEMS
             </ScrollFloat>
@@ -49,58 +49,64 @@ const Services = () => {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-[420px_1fr] gap-8 items-start">
-            <Card className="lg:sticky lg:top-24">
-              <CardHeader>
-                <CardTitle>Select a System</CardTitle>
-                <p className="text-sm text-muted-foreground">
-                  Pick Pro, Pre, or Core. Then explore the machines in that category.
-                </p>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  {(["pro", "pre", "core"] as const).map((key) => (
-                    <motion.div
-                      key={key}
-                      className="w-full"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <Button
-                        type="button"
-                        variant={active === key ? "default" : "outline"}
-                        onClick={() => setActive(key)}
-                        className="w-full"
-                      >
-                        {SYSTEMS[key].label}
+          <div className="flex flex-col md:flex-row gap-8">
+            {/* Sticky Sidebar Wrapper */}
+            <div className="w-full md:w-[320px] lg:w-[420px] flex-shrink-0">
+              <div className="md:sticky md:top-24">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Select a System</CardTitle>
+                    <p className="text-sm text-muted-foreground">
+                      Pick Pro, Pre, or Core. Then explore the machines in that category.
+                    </p>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {(["pro", "pre", "core"] as const).map((key) => (
+                        <motion.div
+                          key={key}
+                          className="w-full"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <Button
+                            type="button"
+                            variant={active === key ? "default" : "outline"}
+                            onClick={() => setActive(key)}
+                            className="w-full"
+                          >
+                            {SYSTEMS[key].label}
+                          </Button>
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    <div className="flex items-start gap-4 rounded-lg border border-border/60 bg-background/60 p-4">
+                      <div className="p-3 bg-primary/10 rounded-full flex-shrink-0">{SYSTEM_ICONS[active]}</div>
+                      <div>
+                        <p className="font-semibold leading-tight">{activeSystem.title}</p>
+                        <p className="text-sm text-muted-foreground mt-1">{activeSystem.subtitle}</p>
+                      </div>
+                    </div>
+
+                    <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+                      <p className="text-sm font-semibold">Need help?</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Share your formats and throughput targets, and we'll recommend the right machines.
+                      </p>
+                      <Button className="w-full mt-3" variant="outline" asChild>
+                        <a href="#contact">Talk to us</a>
                       </Button>
-                    </motion.div>
-                  ))}
-                </div>
+                    </div>
+                    <div className="mt-3 text-sm text-muted-foreground">
+                      <strong>**System images are for illustrative purposes only and may not reflect actual product configurations, options, or appearance.</strong>
+                    </div>            </CardContent>
+                </Card>
+              </div>
+            </div>
 
-                <div className="flex items-start gap-4 rounded-lg border border-border/60 bg-background/60 p-4">
-                  <div className="p-3 bg-primary/10 rounded-full flex-shrink-0">{SYSTEM_ICONS[active]}</div>
-                  <div>
-                    <p className="font-semibold leading-tight">{activeSystem.title}</p>
-                    <p className="text-sm text-muted-foreground mt-1">{activeSystem.subtitle}</p>
-                  </div>
-                </div>
-
-                <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-                  <p className="text-sm font-semibold">Need help?</p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Share your formats and throughput targets, and we'll recommend the right machines.
-                  </p>
-                  <Button className="w-full mt-3" variant="outline" asChild>
-                    <a href="#contact">Talk to us</a>
-                  </Button>
-                </div>
-                <div className="mt-3 text-sm text-muted-foreground">
-                  <strong>**System images are for illustrative purposes only and may not reflect actual product configurations, options, or appearance.</strong>
-                </div>            </CardContent>
-            </Card>
-
-            <div>
+            {/* Products Column */}
+            <div className="flex-1 min-w-0 min-h-[50vh]">
               <div className="flex items-center justify-between gap-4 mb-4">
                 <div>
                   <h3 className="text-xl font-bold tracking-tight">Machines in {activeSystem.label}</h3>
