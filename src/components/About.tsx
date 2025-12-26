@@ -195,7 +195,7 @@ const About = () => {
                     <CardHeader className="pb-2">
                       <div className="flex items-center gap-3">
                         <div className="p-2 bg-primary/10 rounded-full">{item.icon}</div>
-                        <CardTitle className="text-base whitespace-nowrap">{item.title}</CardTitle>
+                        <CardTitle className="text-base md:whitespace-nowrap">{item.title}</CardTitle>
                       </div>
                     </CardHeader>
                     <CardContent>
@@ -226,7 +226,7 @@ const About = () => {
                     <CardHeader className="pb-2">
                       <div className="flex items-center gap-3">
                         <div className="p-2 bg-primary/10 rounded-full">{item.icon}</div>
-                        <CardTitle className="text-base whitespace-nowrap">{item.title}</CardTitle>
+                        <CardTitle className="text-base md:whitespace-nowrap">{item.title}</CardTitle>
                       </div>
                     </CardHeader>
                     <CardContent>

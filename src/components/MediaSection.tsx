@@ -32,7 +32,7 @@ export default function MediaSection() {
                         />
                     </div>
                     <p className="mt-8 text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
-                        Coming Soon
+                        Coming Soon...
                     </p>
                     <p className="mt-3 text-lg text-muted-foreground max-w-xl text-center">
                         We&apos;re preparing exciting video content to showcase our machines and capabilities.
