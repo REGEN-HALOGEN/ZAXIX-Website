@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { useLoading } from "@/context/LoadingContext";
 
 type StartupLoaderProps = {
   minDurationMs?: number;
@@ -9,6 +10,7 @@ type StartupLoaderProps = {
 
 export default function StartupLoader({ minDurationMs = 1800 }: StartupLoaderProps) {
   const [visible, setVisible] = React.useState(true);
+  const { setIsLoaded } = useLoading();
 
   React.useEffect(() => {
     const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
@@ -17,7 +19,10 @@ export default function StartupLoader({ minDurationMs = 1800 }: StartupLoaderPro
     const finish = () => {
       const elapsed = performance.now() - start;
       const delay = reduced ? 0 : Math.max(0, minDurationMs - elapsed);
-      window.setTimeout(() => setVisible(false), delay);
+      window.setTimeout(() => {
+        setVisible(false);
+        setIsLoaded(true);
+      }, delay);
     };
 
     if (document.readyState === "complete") {
@@ -27,7 +32,7 @@ export default function StartupLoader({ minDurationMs = 1800 }: StartupLoaderPro
 
     window.addEventListener("load", finish, { once: true });
     return () => window.removeEventListener("load", finish);
-  }, [minDurationMs]);
+  }, [minDurationMs, setIsLoaded]);
 
   if (!visible) return null;
 

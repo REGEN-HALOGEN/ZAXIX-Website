@@ -406,3 +406,107 @@ export const InquiryModal = ({ isOpen, onOpenChange, productName }: InquiryModal
     </Dialog>
   );
 };
+
+interface ProductDetailModalProps {
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+  product: {
+    title: string;
+    imageSrc?: string;
+    description: string;
+    highlights?: string[];
+  } | null;
+  systemKey: SystemKey;
+  systemLabel: string;
+}
+
+export const ProductDetailModal = ({
+  isOpen,
+  onOpenChange,
+  product,
+  systemKey,
+  systemLabel,
+}: ProductDetailModalProps) => {
+  const openQuoteModal = () => {
+    onOpenChange(false);
+    // Small delay to allow this modal to close first
+    setTimeout(() => {
+      window.dispatchEvent(
+        new CustomEvent('zaxis:open-quote', {
+          detail: { productInterest: systemKey, product: product?.title },
+        })
+      );
+    }, 150);
+  };
+
+  if (!product) return null;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-xl leading-relaxed pr-8">{product.title}</DialogTitle>
+          <DialogDescription className="flex items-center gap-2">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
+              Z Axis {systemLabel}
+            </span>
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-6 py-4">
+          {/* Product Image */}
+          {product.imageSrc && (
+            <div className="relative w-full h-64 bg-secondary/30 rounded-lg overflow-hidden">
+              <img
+                src={product.imageSrc}
+                alt={product.title}
+                className="w-full h-full object-contain"
+              />
+            </div>
+          )}
+
+          {/* Description */}
+          <div>
+            <h4 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground mb-2">
+              Overview
+            </h4>
+            <p className="text-foreground leading-relaxed">{product.description}</p>
+          </div>
+
+          {/* Highlights */}
+          {product.highlights && product.highlights.length > 0 && (
+            <div>
+              <h4 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground mb-3">
+                Key Features & Specifications
+              </h4>
+              <ul className="space-y-2">
+                {product.highlights.map((highlight, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
+                    <span className="text-foreground/90">{highlight}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        <DialogFooter className="flex-col sm:flex-row gap-2">
+          <DialogClose asChild>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
+              <Button type="button" variant="outline" className="w-full">
+                Close
+              </Button>
+            </motion.div>
+          </DialogClose>
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
+            <Button type="button" onClick={openQuoteModal} className="w-full">
+              Get Quote for This Product
+            </Button>
+          </motion.div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+

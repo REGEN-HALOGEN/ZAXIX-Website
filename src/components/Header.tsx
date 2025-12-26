@@ -161,15 +161,15 @@ const Header = () => {
               <Image
                 src={isDarkMode ? '/logo_header-light.svg' : '/logo_header.svg'}
                 alt="Z AXIS logo"
-                width={180}
-                height={48}
-                className="h-12 sm:h-14 md:h-16 w-auto object-contain"
+                width={160}
+                height={44}
+                className="h-10 sm:h-11 md:h-12 w-auto object-contain"
                 priority
                 unoptimized
               />
               <span className="sr-only">Z AXIS Pharmachine Concepts</span>
             </a>
-            
+
             <div className={`absolute top-full left-0 w-full bg-background border-b md:border-none md:static md:w-auto md:bg-transparent md:flex items-center md:space-x-6 ${isMenuOpen ? 'block' : 'hidden'}`}>
               <div className="flex flex-col md:flex-row items-center md:space-x-6 p-4 md:p-0">
                 {navLinks.map((link) => {
@@ -203,9 +203,8 @@ const Header = () => {
                       href={link.href}
                       aria-current={isActive ? 'page' : undefined}
                       onClick={onClick}
-                      className={`relative block md:inline-block transition-colors py-2 px-2 ${
-                        isActive ? 'text-primary' : 'text-foreground hover:text-primary'
-                      }`}
+                      className={`relative block md:inline-block transition-colors py-2 px-2 ${isActive ? 'text-primary' : 'text-foreground hover:text-primary'
+                        }`}
                     >
                       {link.label}
                       {isActive && (
@@ -217,7 +216,7 @@ const Header = () => {
                     </a>
                   );
                 })}
-                
+
                 <div className="flex items-center space-x-4 mt-4 md:mt-0 md:ml-6">
                   <Button onClick={toggleTheme} variant="ghost" size="icon">
                     {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
@@ -233,7 +232,7 @@ const Header = () => {
                 </div>
               </div>
             </div>
-            
+
             <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>

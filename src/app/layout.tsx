@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import StartupLoader from "@/components/StartupLoader";
 import SideContactBar from "@/components/SideContactBar";
+import { LoadingProvider } from "@/context/LoadingContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -74,9 +75,11 @@ export default function RootLayout({
       <body
         className={`${inter.variable} font-sans antialiased`}
       >
-        <StartupLoader />
-        <SideContactBar />
-        {children}
+        <LoadingProvider>
+          <StartupLoader />
+          <SideContactBar />
+          {children}
+        </LoadingProvider>
       </body>
     </html>
   );
