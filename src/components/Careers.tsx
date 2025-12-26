@@ -40,7 +40,7 @@ const Careers = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 items-stretch">
           <div className="space-y-6">
             <div className="overflow-hidden rounded-lg border bg-card">
               <div className="relative aspect-video w-full">
@@ -77,7 +77,7 @@ const Careers = () => {
             </Card>
           </div>
 
-          <Card>
+          <Card className="h-full flex flex-col justify-center">
             <CardHeader>
               <CardTitle className="text-xl lg:text-2xl text-primary font-bold md:whitespace-nowrap">What We Look For: The Z Axis Core</CardTitle>
             </CardHeader>
