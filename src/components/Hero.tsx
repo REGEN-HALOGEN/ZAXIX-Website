@@ -51,6 +51,12 @@ const Hero = () => {
   const sanskritGraphemes = useMemo(() => splitGraphemes(sanskritText), [sanskritText]);
   const [typedCount, setTypedCount] = useState(prefersReducedMotion ? sanskritGraphemes.length : 0);
 
+  // English translation with line break
+  const translationText =
+    'The machines are like divine aids, for they safeguard life.\nBy protecting medicines appropriately, they bring well-being to the world.';
+  const translationGraphemes = useMemo(() => splitGraphemes(translationText), [translationText]);
+  const [translationTypedCount, setTranslationTypedCount] = useState(prefersReducedMotion ? translationGraphemes.length : 0);
+
   useEffect(() => {
     if (prefersReducedMotion || !isLoaded) {
       if (prefersReducedMotion) setTypedCount(sanskritGraphemes.length);
@@ -68,12 +74,40 @@ const Hero = () => {
     return () => window.clearInterval(interval);
   }, [prefersReducedMotion, sanskritGraphemes.length, isLoaded]);
 
+  // Translation typing effect - starts after Sanskrit is done, slower speed
+  useEffect(() => {
+    if (prefersReducedMotion || !isLoaded) {
+      if (prefersReducedMotion) setTranslationTypedCount(translationGraphemes.length);
+      return;
+    }
+
+    // Wait for Sanskrit to finish before starting translation
+    if (typedCount < sanskritGraphemes.length) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setTranslationTypedCount((c) => {
+        if (c >= translationGraphemes.length) return c;
+        return c + 1;
+      });
+    }, 50); // Faster speed - 50ms
+
+    return () => window.clearInterval(interval);
+  }, [prefersReducedMotion, translationGraphemes.length, isLoaded, typedCount, sanskritGraphemes.length]);
+
   const typedSanskrit = prefersReducedMotion
     ? sanskritText
     : sanskritGraphemes.slice(0, typedCount).join('');
 
   // Split the typed text into two lines so we can force each line to stay on a single line
   const typedLines = typedSanskrit.split('\n');
+
+  // Translation typed text
+  const typedTranslation = prefersReducedMotion
+    ? translationText
+    : translationGraphemes.slice(0, translationTypedCount).join('');
+  const translationLines = typedTranslation.split('\n');
 
   const scrollingImages = useMemo(
     () => [
@@ -99,30 +133,62 @@ const Hero = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto text-center">
             <motion.h1
-              className="text-4xl lg:text-6xl font-bold italic tracking-tighter leading-tight mb-4"
+              className="font-bold italic tracking-tighter leading-tight mb-8 text-center"
               style={{ fontFamily: 'Verdana, Geneva, Tahoma, sans-serif' }}
               initial={{ opacity: 0, x: -100, scale: 0.8 }}
               animate={isLoaded ? { opacity: 1, x: 0, scale: 1 } : { opacity: 0, x: -100, scale: 0.8 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <motion.span
-                className="block"
-                initial={{ opacity: 0, x: -50, scale: 0.9 }}
-                animate={isLoaded ? { opacity: 1, x: 0, scale: 1 } : { opacity: 0, x: -50, scale: 0.9 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                WELCOME TO Z AXIS
-              </motion.span>
-              <motion.span
-                className="block text-2xl lg:text-4xl mt-2"
-                initial={{ opacity: 0, x: -50, scale: 0.9 }}
-                animate={isLoaded ? { opacity: 1, x: 0, scale: 1 } : { opacity: 0, x: -50, scale: 0.9 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                PHARMACHINE CONCEPTS INDIA
-              </motion.span>
+              {/* Line 1: Z AXIS - Bigger */}
+              <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-2">
+                <span
+                  className="text-primary"
+                  style={{
+                    WebkitTextStroke: '1.5px #333',
+                    textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
+                  }}
+                >Z</span> AXIS
+              </span>
+              {/* Line 2: PHARMACHINE CONCEPTS INDIA - Same size */}
+              <span className="block text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl">
+                PHARMACHINE CONCEPTS{' '}
+                <span
+                  className="text-[#FF9933]"
+                  style={{
+                    WebkitTextStroke: '1px #333',
+                    textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
+                  }}
+                >IN</span>
+                <span
+                  className="text-white"
+                  style={{
+                    WebkitTextStroke: '1px #333',
+                    textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
+                  }}
+                >D</span>
+                <span
+                  className="text-[#138808]"
+                  style={{
+                    WebkitTextStroke: '1px #333',
+                    textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
+                  }}
+                >IA</span>
+              </span>
             </motion.h1>
-            <p className="text-primary font-bold leading-relaxed tracking-wide text-2xl sm:text-3xl lg:text-4xl max-w-5xl mx-auto mb-8">
+            {/* Welcome GIF - blended with background */}
+            <motion.div
+              className="flex justify-center mb-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
+              <img
+                src="/welcome.gif"
+                alt="Welcome animation"
+                className="w-full max-w-xl h-auto rounded-2xl shadow-lg"
+              />
+            </motion.div>
+            <p className="text-primary font-bold leading-relaxed tracking-wide text-2xl sm:text-3xl lg:text-4xl max-w-5xl mx-auto mb-6">
               <span className="sr-only">{sanskritText}</span>
               <span aria-hidden="true" className="block text-center mx-auto">
                 <span className="block whitespace-nowrap leading-tight text-center">{typedLines[0] ?? ''}</span>
@@ -135,13 +201,22 @@ const Hero = () => {
               </span>
             </p>
             <p
-              className="text-lg lg:text-xl text-muted-foreground max-w-4xl mx-auto mb-4 text-balance leading-relaxed"
+              className="text-lg lg:text-xl text-muted-foreground max-w-4xl mx-auto mb-8 text-balance leading-relaxed italic font-bold"
             >
-              The machines are like divine aids, for they safeguard life. By protecting medicines appropriately, they bring well-being to the world.
+              <span className="sr-only">{translationText}</span>
+              <span aria-hidden="true" className="block text-center mx-auto">
+                <span className="block leading-tight text-center">{translationLines[0] ?? ''}</span>
+                <span className="block leading-tight text-center">
+                  {translationLines[1] ?? ''}
+                  {!prefersReducedMotion && translationTypedCount < translationGraphemes.length && typedCount >= sanskritGraphemes.length && (
+                    <span className="inline-block w-[0.5ch] animate-pulse">|</span>
+                  )}
+                </span>
+              </span>
             </p>
             {/* Animated tagline */}
             <motion.p
-              className="text-xl lg:text-2xl font-bold max-w-4xl mx-auto mb-8 text-center gradient-text-animate"
+              className="text-xl lg:text-2xl font-bold max-w-4xl mx-auto mb-10 text-center gradient-text-animate"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1.2, delay: 0.8, ease: "easeOut" }}
@@ -149,7 +224,7 @@ const Hero = () => {
               OFFERING NEW DIAMENTIONAL 4.0 PHARMACEUTICAL FILL FINISH MACHINES
             </motion.p>
             <div
-              className="flex justify-center items-center space-x-4 mb-12"
+              className="flex justify-center items-center space-x-6 lg:space-x-8 mb-16"
             >
               <div className="text-center">
                 <p className="text-3xl font-bold">20+</p>

@@ -18,7 +18,7 @@ interface ScrollFloatProps {
     scrollStart?: string;
     scrollEnd?: string;
     stagger?: number;
-    highlightWords?: { word: string; className: string }[];
+    highlightWords?: { word: string; className: string; style?: React.CSSProperties }[];
 }
 
 const ScrollFloat = ({
@@ -55,6 +55,9 @@ const ScrollFloat = ({
                 const highlight = highlightWords.find((h) => h.word === word);
                 if (highlight) {
                     wordSpan.className = highlight.className;
+                    if (highlight.style) {
+                        Object.assign(wordSpan.style, highlight.style);
+                    }
                 }
 
                 wordSpan.innerHTML = word + (index < words.length - 1 ? '&nbsp;' : '');

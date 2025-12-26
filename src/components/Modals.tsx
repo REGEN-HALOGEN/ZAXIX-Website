@@ -467,7 +467,7 @@ export const ProductDetailModal = ({
 
           {/* Description */}
           <div>
-            <h4 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground mb-2">
+            <h4 className="font-bold text-base uppercase tracking-wide text-primary mb-2">
               Overview
             </h4>
             <p className="text-foreground leading-relaxed">{product.description}</p>
@@ -476,7 +476,7 @@ export const ProductDetailModal = ({
           {/* Highlights */}
           {product.highlights && product.highlights.length > 0 && (
             <div>
-              <h4 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground mb-3">
+              <h4 className="font-bold text-base uppercase tracking-wide text-primary mb-3">
                 Key Features & Specifications
               </h4>
               <ul className="space-y-2">
@@ -506,7 +506,7 @@ export const ProductDetailModal = ({
           </motion.div>
         </DialogFooter>
       </DialogContent>
-    </Dialog>
+    </Dialog >
   );
 };
 

@@ -6,6 +6,8 @@ import StartupLoader from "@/components/StartupLoader";
 import SideContactBar from "@/components/SideContactBar";
 import { LoadingProvider } from "@/context/LoadingContext";
 
+import StarsBackground from "@/components/ui/StarsBackground";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -76,6 +78,7 @@ export default function RootLayout({
         className={`${inter.variable} font-sans antialiased`}
       >
         <LoadingProvider>
+          <StarsBackground />
           <StartupLoader />
           <SideContactBar />
           {children}
