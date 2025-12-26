@@ -4,6 +4,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Target, Cpu, Shield, Droplet, Wind, CheckCircle, Crosshair, ShieldCheck } from 'lucide-react';
 import ScrollFloat from '@/components/ui/ScrollFloat';
+import { GlareCard } from '@/components/ui/glare-card';
 
 const zAxisAdvantages = [
   {
@@ -64,7 +65,7 @@ const About = () => {
             </span>
             <ScrollFloat
               className="text-4xl md:text-5xl lg:text-6xl font-bold italic tracking-tight mb-6"
-              highlightWords={[{ word: 'AXIS', className: 'text-primary' }]}
+              highlightWords={[{ word: 'Z', className: 'text-primary', style: { WebkitTextStroke: '1px #333', textShadow: '1px 1px 2px rgba(0,0,0,0.3)' } }]}
             >
               ABOUT Z AXIS
             </ScrollFloat>
@@ -106,7 +107,7 @@ const About = () => {
               <ScrollFloat
                 className="text-3xl md:text-4xl lg:text-5xl font-bold italic tracking-tight mb-4"
                 as="h3"
-                highlightWords={[{ word: 'AXIS?', className: 'text-primary' }]}
+                highlightWords={[{ word: 'Z', className: 'text-primary', style: { WebkitTextStroke: '1px #333', textShadow: '1px 1px 2px rgba(0,0,0,0.3)' } }]}
               >
                 WHY Z AXIS?
               </ScrollFloat>
@@ -194,7 +195,7 @@ const About = () => {
 
           {/* SECTION 3: Vision, Mission & Values */}
           <div className="grid gap-6 md:grid-cols-3 mb-20">
-            <Card className="h-full border-border/60 bg-background/70 shadow-sm ring-1 ring-primary/10 animated-border relative overflow-hidden">
+            <GlareCard className="h-full">
               {/* Background Image */}
               <img
                 src="/Photos/Vision_light.png"
@@ -214,9 +215,9 @@ const About = () => {
                   To be the essential, trusted partner in global health, where our technical mastery of the Z-axis translates directly into unwavering trust in every medicine produced, thereby fulfilling our solemn commitment to Sarve Santu Niramaya (Wellness to All).
                 </p>
               </CardContent>
-            </Card>
+            </GlareCard>
 
-            <Card className="h-full border-border/60 bg-background/70 shadow-sm ring-1 ring-primary/10 animated-border relative overflow-hidden">
+            <GlareCard className="h-full">
               {/* Background Image */}
               <img
                 src="/Photos/Mission_light.png"
@@ -236,9 +237,9 @@ const About = () => {
                   Our mission is anchored in the sanctity of human life. We design and deliver Z-axis systems with uncompromising precision, ensuring that the burden of dose accuracy and quality compliance is lifted from our partners.
                 </p>
               </CardContent>
-            </Card>
+            </GlareCard>
 
-            <Card className="h-full border-border/60 bg-background/70 shadow-sm ring-1 ring-primary/10 animated-border relative overflow-hidden">
+            <GlareCard className="h-full">
               {/* Background Image */}
               <img
                 src="/Photos/Values_light.png"
@@ -258,7 +259,7 @@ const About = () => {
                   We believe in precision without compromise, quality by design, integrity in every action, continuous innovation, and the philosophy of Sarve Santu Niramaya—wellness to all.
                 </p>
               </CardContent>
-            </Card>
+            </GlareCard>
           </div>
 
           {/* SECTION 4: Core Pillars */}
