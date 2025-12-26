@@ -199,6 +199,21 @@ const Contact = () => {
                 </div>
               ))}
             </div>
+
+            {/* Google Maps */}
+            <div className="mt-8 rounded-lg overflow-hidden border border-border/60 shadow-sm">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.0!2d72.5044!3d23.0225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e9b2e6b2f5f3b%3A0x8b8b8b8b8b8b8b8b!2sTitanium%20City%20Centre%2C%20100%20Feet%20Rd%2C%20Prahladnagar%2C%20Ahmedabad%2C%20Gujarat%20380015!5e0!3m2!1sen!2sin!4v1703619567890!5m2!1sen!2sin"
+                width="100%"
+                height="250"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Z Axis Pharmachine Location - Titanium City Centre, Ahmedabad"
+                className="w-full"
+              />
+            </div>
           </div>
 
           <Card>

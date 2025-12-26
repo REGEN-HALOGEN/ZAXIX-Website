@@ -1,14 +1,22 @@
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { Moon, Sun, Menu, X } from 'lucide-react';
+import { Moon, Sun, Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
 import { QuoteModal } from './Modals';
 import type { SystemKey } from "@/lib/zaxis-systems";
 
+// About section subsections for dropdown
+const aboutSubsections = [
+  { href: "#about", label: "Overview" },
+  { href: "#about-why", label: "Why Z Axis?" },
+  { href: "#about-values", label: "Vision & Mission" },
+  { href: "#about-team", label: "Team Z Axis" },
+];
+
 const navLinks = [
   { href: "#home", label: "Home" },
-  { href: "#about", label: "About" },
+  { href: "#about", label: "About", hasDropdown: true, subsections: aboutSubsections },
   { href: "#systems", label: "Systems" },
   { href: "#infrastructure", label: "Infrastructure" },
   { href: "#media", label: "Media" },
@@ -198,6 +206,61 @@ const Header = () => {
                     // For non-hash links default behavior happens
                   };
 
+                  // Render dropdown for items with subsections
+                  if (link.hasDropdown && link.subsections) {
+                    return (
+                      <div key={link.href} className="relative group">
+                        <button
+                          className={`relative flex items-center gap-1 transition-colors py-2 px-2 ${isActive ? 'text-primary' : 'text-foreground hover:text-primary'
+                            }`}
+                        >
+                          <span className="relative">
+                            {link.label}
+                            {isActive && (
+                              <>
+                                <span className="pointer-events-none absolute left-0 right-0 -bottom-2.5 h-1 rounded-full bg-primary/40 blur-sm" />
+                                <span className="pointer-events-none absolute left-0 right-0 -bottom-2.5 h-1 rounded-full bg-primary" />
+                              </>
+                            )}
+                          </span>
+                          <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
+                        </button>
+
+                        {/* Dropdown menu */}
+                        <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                          <div className="bg-background border border-border/60 rounded-lg shadow-lg py-2 min-w-[180px] backdrop-blur-sm">
+                            {link.subsections.map((sub) => {
+                              const subId = sub.href.replace('#', '');
+                              const subOnClick = (e: React.MouseEvent) => {
+                                e.preventDefault();
+                                setIsMenuOpen(false);
+                                if (window.location.pathname === '/') {
+                                  const el = document.getElementById(subId);
+                                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                  setActiveSection('about');
+                                  window.history.replaceState(null, '', sub.href);
+                                } else {
+                                  window.location.href = `/${sub.href}`;
+                                }
+                              };
+                              return (
+                                <a
+                                  key={sub.href}
+                                  href={sub.href}
+                                  onClick={subOnClick}
+                                  className="block px-4 py-2 text-sm text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+                                >
+                                  {sub.label}
+                                </a>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  // Regular nav link
                   return (
                     <a
                       key={link.href}

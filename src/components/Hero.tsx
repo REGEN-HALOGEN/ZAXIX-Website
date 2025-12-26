@@ -53,7 +53,7 @@ const Hero = () => {
 
   // English translation with line break
   const translationText =
-    'The machines are like divine aids, for they safeguard life.\nBy protecting medicines appropriately, they bring well-being to the world.';
+    '"The machines are like divine aids, for they safeguard life.\nBy protecting medicines appropriately, they bring well-being to the world."';
   const translationGraphemes = useMemo(() => splitGraphemes(translationText), [translationText]);
   const [translationTypedCount, setTranslationTypedCount] = useState(prefersReducedMotion ? translationGraphemes.length : 0);
 
@@ -139,40 +139,15 @@ const Hero = () => {
               animate={isLoaded ? { opacity: 1, x: 0, scale: 1 } : { opacity: 0, x: -100, scale: 0.8 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              {/* Line 1: Z AXIS - Bigger */}
-              <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-2">
+              {/* Single line: Z AXIS PHARMACHINE CONCEPTS INDIA */}
+              <span className="block whitespace-nowrap text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
                 <span
                   className="text-primary"
                   style={{
-                    WebkitTextStroke: '1.5px #333',
-                    textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
-                  }}
-                >Z</span> AXIS
-              </span>
-              {/* Line 2: PHARMACHINE CONCEPTS INDIA - Same size */}
-              <span className="block text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl">
-                PHARMACHINE CONCEPTS{' '}
-                <span
-                  className="text-[#FF9933]"
-                  style={{
                     WebkitTextStroke: '1px #333',
                     textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
                   }}
-                >IN</span>
-                <span
-                  className="text-white"
-                  style={{
-                    WebkitTextStroke: '1px #333',
-                    textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
-                  }}
-                >D</span>
-                <span
-                  className="text-[#138808]"
-                  style={{
-                    WebkitTextStroke: '1px #333',
-                    textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
-                  }}
-                >IA</span>
+                >Z</span> AXIS PHARMACHINE CONCEPTS (INDIA)
               </span>
             </motion.h1>
             {/* Welcome GIF - blended with background */}
@@ -201,7 +176,7 @@ const Hero = () => {
               </span>
             </p>
             <p
-              className="text-lg lg:text-xl text-muted-foreground max-w-4xl mx-auto mb-8 text-balance leading-relaxed italic font-bold"
+              className="text-lg lg:text-xl text-primary max-w-4xl mx-auto mb-8 text-balance leading-relaxed italic font-bold"
             >
               <span className="sr-only">{translationText}</span>
               <span aria-hidden="true" className="block text-center mx-auto">
