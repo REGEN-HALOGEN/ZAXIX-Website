@@ -6,6 +6,66 @@ import { Target, Cpu, Shield, Droplet, Wind, CheckCircle, Crosshair, ShieldCheck
 import ScrollFloat from '@/components/ui/ScrollFloat';
 import { GlareCard } from '@/components/ui/glare-card';
 
+// Team member data
+const teamMembers = [
+  {
+    name: "Vikram Yeolaker",
+    image: "/founder.png",
+    alt: "Vikram - Founder of Z Axis Pharmachine",
+    paragraphs: [
+      '"While Vikram provides the strategic vision and drives the momentum of Z Axis Pharmachine Concepts India, our growth journey is fundamentally a team achievement. He leads a dedicated pack of engineers and innovators—experts whose collective precision, dedication, and problem-solving drive every single success story we write."',
+      "Vikram brings over two decades of invaluable experience in the pharmaceutical industry, with expertise spanning drugs, drug delivery devices, and drug delivery systems."
+    ]
+  },
+  {
+    name: "Meeraj Yeolaker",
+    image: "/meeraj.jpeg",
+    alt: "Meeraj Yeolaker - Z Axis Pharmachine",
+    paragraphs: [
+      "Meet Meeraaj, a qualified Mechanical Engineer who brings a fresh, Gen Z perspective to the precision-driven world of Z Axis Pharmachine.",
+      "Blending technical expertise with modern innovation, he bridges the gap between traditional engineering excellence and the future of pharmaceutical automation."
+    ]
+  }
+];
+
+// Team Card Component - Shows both members
+const TeamCard = () => {
+  return (
+    <Card className="border-border/60 bg-background/50 shadow-sm max-w-6xl mx-auto overflow-hidden">
+      <CardContent className="p-0">
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          {teamMembers.map((member, index) => (
+            <div
+              key={member.name}
+              className={`flex flex-col ${index === 0 ? 'md:border-r border-border/60' : ''}`}
+            >
+              {/* Image */}
+              <div className="aspect-[4/3] overflow-hidden bg-background/30">
+                <img
+                  src={member.image}
+                  alt={member.alt}
+                  className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              {/* Text Content */}
+              <div className="p-6 md:p-8 flex-1">
+                <h4 className="text-xl font-semibold mb-4">{member.name}</h4>
+                <div className="space-y-3">
+                  {member.paragraphs.map((text, idx) => (
+                    <p key={idx} className="text-sm text-muted-foreground leading-relaxed">
+                      {text}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
 const zAxisAdvantages = [
   {
     icon: <Droplet className="h-6 w-6 text-primary" />,
@@ -99,7 +159,7 @@ const About = () => {
           </div>
 
           {/* SECTION 2: Why Z Axis */}
-          <div className="w-full mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
+          <div id="about-why" className="w-full mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
             <div className="text-center mb-10">
               <span className="inline-block text-sm font-semibold tracking-widest text-primary uppercase mb-4">
                 The Difference
@@ -194,7 +254,7 @@ const About = () => {
           </div>
 
           {/* SECTION 3: Vision, Mission & Values */}
-          <div className="grid gap-6 md:grid-cols-3 mb-20">
+          <div id="about-values" className="grid gap-6 md:grid-cols-3 mb-20">
             <GlareCard className="h-full">
               {/* Background Image */}
               <img
@@ -280,49 +340,22 @@ const About = () => {
           </div>
 
           {/* SECTION 5: Founder & Team */}
-          <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+          <div id="about-team" className="w-full animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
             <div className="text-center mb-8">
               <span className="inline-block text-sm font-semibold tracking-widest text-primary uppercase mb-4">
-                Leadership
+                Meet The
               </span>
               <ScrollFloat
                 className="text-3xl md:text-4xl lg:text-5xl font-bold italic tracking-tight"
                 as="h3"
-                highlightWords={[{ word: 'TEAM', className: 'text-primary' }]}
+                highlightWords={[{ word: 'Z', className: 'text-primary', style: { WebkitTextStroke: '1px #333', textShadow: '1px 1px 2px rgba(0,0,0,0.3)' } }]}
               >
-                THE TEAM
+                TEAM Z AXIS
               </ScrollFloat>
             </div>
 
-            <Card className="border-border/60 bg-background/50 shadow-sm max-w-6xl mx-auto overflow-hidden">
-              <CardContent className="p-0">
-                <div className="flex flex-col md:flex-row">
-                  {/* Founder Image */}
-                  <div className="md:w-2/5 flex-shrink-0 bg-background/30">
-                    <img
-                      src="/founder.png"
-                      alt="Vikram - Founder of Z Axis Pharmachine"
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  {/* Text Content */}
-                  <div className="p-6 md:p-8 flex-1">
-                    <h4 className="text-xl font-semibold mb-4">Vikram Yeolaker & Team</h4>
-                    <div className="space-y-4">
-                      <p className="text-muted-foreground leading-relaxed">
-                        "While Vikram provides the strategic vision and drives the momentum of Z Axis Pharmachine Concepts India, our growth journey is fundamentally a team achievement. He leads a dedicated pack of engineers and innovators—experts whose collective precision, dedication, and problem-solving drive every single success story we write."
-                      </p>
-                      <p className="text-muted-foreground leading-relaxed">
-                        Vikram, with a distinguished academic background, including a Master's degree and an MBA in Industrial Relation management, brings with him over two decades of invaluable experience in the pharmaceutical industry.
-                      </p>
-                      <p className="text-muted-foreground leading-relaxed">
-                        His expertise spans across drugs, drug delivery devices, and drug delivery systems, providing a rare and unique blend of knowledge that allows him to deeply understand and effectively respond to the evolving needs of pharmaceutical packaging.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Team Members Card */}
+            <TeamCard />
           </div>
 
         </div>
