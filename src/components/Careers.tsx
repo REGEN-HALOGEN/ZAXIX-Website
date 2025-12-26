@@ -57,7 +57,7 @@ const Careers = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Our Culture</CardTitle>
+                <CardTitle className="text-2xl lg:text-3xl text-primary font-bold">Our Culture</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-muted-foreground">
                 <p>
@@ -79,7 +79,7 @@ const Careers = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle>What We Look For: The Z Axis Core</CardTitle>
+              <CardTitle className="text-xl lg:text-2xl text-primary font-bold whitespace-nowrap">What We Look For: The Z Axis Core</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground">
               <p>
@@ -101,7 +101,7 @@ const Careers = () => {
         <div className="mt-10">
           <Card>
             <CardHeader>
-              <CardTitle>Be a Z Axian</CardTitle>
+              <CardTitle className="text-2xl lg:text-3xl text-primary font-bold">Be a Z Axian</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground">
               <p>
