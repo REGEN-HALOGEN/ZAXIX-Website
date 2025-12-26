@@ -80,6 +80,8 @@
     /* Firefox */
     -ms-overflow-style: none;
     /* IE and Edge */
+    overflow-x: hidden;
+    /* Prevent horizontal scroll on mobile */
   }
 
   html::-webkit-scrollbar {
@@ -92,6 +94,8 @@
     color: hsl(var(--foreground));
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-style: italic;
+    overflow-x: hidden;
+    /* Prevent horizontal scroll on mobile */
     /* Subtle warm “aura” backdrop */
     background-image:
       radial-gradient(900px circle at 15% 10%, hsl(var(--primary) / 0.10), transparent 55%),

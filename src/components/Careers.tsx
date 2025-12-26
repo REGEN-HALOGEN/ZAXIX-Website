@@ -79,7 +79,7 @@ const Careers = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-xl lg:text-2xl text-primary font-bold whitespace-nowrap">What We Look For: The Z Axis Core</CardTitle>
+              <CardTitle className="text-xl lg:text-2xl text-primary font-bold md:whitespace-nowrap">What We Look For: The Z Axis Core</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground">
               <p>

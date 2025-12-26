@@ -140,7 +140,7 @@ const Hero = () => {
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
               {/* Single line: Z AXIS PHARMACHINE CONCEPTS INDIA */}
-              <span className="block whitespace-nowrap text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
+              <span className="block md:whitespace-nowrap text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl">
                 <span
                   className="text-primary"
                   style={{
@@ -163,11 +163,11 @@ const Hero = () => {
                 className="w-full max-w-xl h-auto rounded-2xl shadow-lg"
               />
             </motion.div>
-            <p className="text-primary font-bold leading-relaxed tracking-wide text-2xl sm:text-3xl lg:text-4xl max-w-5xl mx-auto mb-6">
+            <p className="text-primary font-bold leading-relaxed tracking-wide text-lg sm:text-2xl lg:text-4xl max-w-5xl mx-auto mb-6 px-2">
               <span className="sr-only">{sanskritText}</span>
               <span aria-hidden="true" className="block text-center mx-auto">
-                <span className="block whitespace-nowrap leading-tight text-center">{typedLines[0] ?? ''}</span>
-                <span className="block whitespace-nowrap leading-tight text-center">
+                <span className="block md:whitespace-nowrap leading-tight text-center">{typedLines[0] ?? ''}</span>
+                <span className="block md:whitespace-nowrap leading-tight text-center">
                   {typedLines[1] ?? ''}
                   {!prefersReducedMotion && typedCount < sanskritGraphemes.length && (
                     <span className="inline-block w-[0.6ch] animate-pulse">|</span>
@@ -199,21 +199,21 @@ const Hero = () => {
               OFFERING NEW DIAMENTIONAL 4.0 PHARMACEUTICAL FILL FINISH MACHINES
             </motion.p>
             <div
-              className="flex justify-center items-center space-x-6 lg:space-x-8 mb-16"
+              className="flex flex-wrap justify-center items-center gap-4 lg:gap-8 mb-16"
             >
-              <div className="text-center">
-                <p className="text-3xl font-bold">20+</p>
-                <p className="text-sm text-muted-foreground">Years pharma expertise</p>
+              <div className="text-center px-4">
+                <p className="text-2xl sm:text-3xl font-bold">20+</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Years pharma expertise</p>
               </div>
-              <div className="border-l h-10 border-border"></div>
-              <div className="text-center">
-                <p className="text-3xl font-bold">Sterile</p>
-                <p className="text-sm text-muted-foreground">Processing focus</p>
+              <div className="hidden sm:block border-l h-10 border-border"></div>
+              <div className="text-center px-4">
+                <p className="text-2xl sm:text-3xl font-bold">Sterile</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Processing focus</p>
               </div>
-              <div className="border-l h-10 border-border"></div>
-              <div className="text-center">
-                <p className="text-3xl font-bold">Compliant</p>
-                <p className="text-sm text-muted-foreground">GMP / EU Annex 1 ready</p>
+              <div className="hidden sm:block border-l h-10 border-border"></div>
+              <div className="text-center px-4">
+                <p className="text-2xl sm:text-3xl font-bold">Compliant</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">GMP / EU Annex 1 ready</p>
               </div>
             </div>
             <div
