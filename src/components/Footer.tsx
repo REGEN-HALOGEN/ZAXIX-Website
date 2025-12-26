@@ -35,7 +35,7 @@ const Footer = () => {
               />
             </div>
             <p className="text-muted-foreground max-w-md">
-              Next-edge pharmaceutical processing & packaging systems with a Pharma 4.0, sterile, compliant, automation-first philosophy.
+              Next-edge pharmaceutical packaging systems with a Pharma 4.0, sterile, compliant, automation-first philosophy.
             </p>
 
             <div className="flex items-center gap-4">

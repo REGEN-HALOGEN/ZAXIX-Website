@@ -14,38 +14,55 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL("https://www.zaxispharmachine.com"),
   title: {
     default:
-      "Z AXIS Pharmachine Concepts – Pharmaceutical Processing & Packaging Systems",
+      "Z AXIS Pharmachine – Pharmaceutical Packaging Systems",
     template: "%s | Z AXIS Pharmachine Concepts",
   },
   description:
-    "Z AXIS Pharmachine Concepts (India): next-edge pharmaceutical processing & packaging systems with a Pharma 4.0, sterile, compliant, automation-first philosophy.",
+    "Premier pharmaceutical packaging machinery with Pharma 4.0 technology. Sterile fill-finish, automated packaging, and compliant systems for modern pharma.",
+  keywords: [
+    "pharmaceutical machinery",
+    "pharma packaging",
+    "packaging systems",
+    "Pharma 4.0",
+    "sterile fill-finish",
+    "pharmaceutical equipment",
+    "Z AXIS Pharmachine",
+  ],
+  authors: [{ name: "Z AXIS Pharmachine Concepts" }],
+  creator: "Z AXIS Pharmachine Concepts",
+  publisher: "Z AXIS Pharmachine Concepts",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
+    locale: "en_IN",
     url: "/",
     siteName: "Z AXIS Pharmachine Concepts",
     title:
-      "Z AXIS Pharmachine Concepts – Pharmaceutical Processing & Packaging Systems",
+      "Z AXIS Pharmachine – Pharmaceutical Packaging Systems",
     description:
-      "Z AXIS Pharmachine Concepts (India): next-edge pharmaceutical processing & packaging systems with a Pharma 4.0, sterile, compliant, automation-first philosophy.",
+      "Premier pharmaceutical packaging machinery with Pharma 4.0 technology. Sterile fill-finish, automated packaging, and compliant systems for modern pharma.",
     images: [
       {
-        url: "/logo.svg",
+        url: "/og_Image.png",
+        width: 1200,
+        height: 630,
+        alt: "Z AXIS Pharmachine Concepts - Pharmaceutical Packaging Systems",
       },
     ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title:
-      "Z AXIS Pharmachine Concepts – Pharmaceutical Processing & Packaging Systems",
+      "Z AXIS Pharmachine – Pharmaceutical Packaging Systems",
     description:
-      "Z AXIS Pharmachine Concepts (India): next-edge pharmaceutical processing & packaging systems with a Pharma 4.0, sterile, compliant, automation-first philosophy.",
-    images: ["/logo.svg"],
+      "Premier pharmaceutical packaging machinery with Pharma 4.0 technology. Sterile fill-finish, automated packaging, and compliant systems for modern pharma.",
+    images: ["/og_Image.png"],
+    creator: "@zaxispharmachine",
   },
   robots: {
     index: true,
