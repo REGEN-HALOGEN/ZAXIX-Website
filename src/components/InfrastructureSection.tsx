@@ -1,83 +1,25 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { Button } from './ui/button';
-import { Dialog, DialogContent } from './ui/dialog';
-import { ArrowLeft, ArrowRight, X } from 'lucide-react';
+import React, { useState } from 'react';
+import Image from 'next/image';
 import ScrollFloat from '@/components/ui/ScrollFloat';
-
-type InfraItem = {
-  type: 'image' | 'video';
-  file: string;
-  url: string;
-  name: string;
-  ext: string;
-  poster?: string | null;
-};
+import { Card, CardContent } from '@/components/ui/card';
+import { MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function InfrastructureSection() {
-  const [items, setItems] = useState<InfraItem[]>([]);
-  const [visibleCount, setVisibleCount] = useState(12);
-  const [loading, setLoading] = useState(true);
-  const [open, setOpen] = useState(false);
-  const [index, setIndex] = useState(0);
-  const containerRef = useRef<HTMLElement | null>(null);
+  const images = [
+    { src: "/Infra/infra2.jpeg", alt: "Z Axis Office - Titanium City Center, Ahmedabad" },
+    { src: "/Infra/infra1.jpeg", alt: "Z Axis Office Building" },
+  ];
+  const [currentImage, setCurrentImage] = useState(0);
 
-  useEffect(() => {
-    async function fetchManifest() {
-      try {
-        const res = await fetch('/Infra/manifest.json');
-        if (!res.ok) throw new Error('Failed fetching manifest');
-        const json = await res.json();
-        setItems(json.items ?? []);
-      } catch (e) {
-        console.warn('Could not load infra manifest', e);
-        setItems([]);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchManifest();
-  }, []);
+  const nextImage = () => setCurrentImage((prev) => (prev + 1) % images.length);
+  const prevImage = () => setCurrentImage((prev) => (prev - 1 + images.length) % images.length);
 
-  // If loaded via `/#infrastructure`, smooth scroll to the section on mount
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    if (window.location.hash === '#infrastructure') {
-      const el = document.getElementById('infrastructure');
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, []);
-
-  // Only show images in the embedded section (videos are excluded here)
-  const imageItems = items.filter((i) => i.type === 'image');
-  const visibleItems = imageItems.slice(0, visibleCount);
-
-  const openAt = useCallback((i: number) => {
-    setIndex(i);
-    setOpen(true);
-  }, []);
-
-  const prev = useCallback(() => setIndex((s) => (s - 1 + imageItems.length) % imageItems.length), [imageItems.length]);
-  const next = useCallback(() => setIndex((s) => (s + 1) % imageItems.length), [imageItems.length]);
-
-  useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (!open) return;
-      if (e.key === 'ArrowLeft') prev();
-      if (e.key === 'ArrowRight') next();
-      if (e.key === 'Escape') setOpen(false);
-    }
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [open, prev, next]);
   return (
-    <section id="infrastructure" aria-labelledby="infrastructure-heading" ref={(el) => { containerRef.current = el; }} className="py-16 lg:py-24">
+    <section id="infrastructure" aria-labelledby="infrastructure-heading" className="py-16 lg:py-24">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className="inline-block text-sm font-semibold tracking-widest text-primary uppercase mb-4">
-            Our Facilities
-          </span>
           <ScrollFloat
             className="text-3xl md:text-4xl lg:text-5xl font-bold italic tracking-tight mb-4"
             highlightWords={[{ word: 'INFRASTRUCTURE', className: 'text-primary' }]}
@@ -89,78 +31,76 @@ export default function InfrastructureSection() {
           </p>
         </div>
 
-        {loading ? (
-          <div>Loading...</div>
-        ) : imageItems.length === 0 ? (
-          <div className="py-12 text-center">
-            <h3 className="text-xl font-semibold">No infrastructure images available</h3>
-            <p className="mt-2 text-muted-foreground">This gallery only shows images. If you only have videos, they will not appear here. Add images to <code>/public/Infra</code> and run <code>npm run generate-infra-manifest</code>.</p>
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {visibleItems.map((it, i) => (
+        {/* Office Card */}
+        <div className="max-w-4xl mx-auto">
+          <Card className="overflow-hidden border-border/60 bg-background/50 shadow-xl">
+            <div className="grid md:grid-cols-2 gap-0">
+              {/* Image Section with Carousel */}
+              <div className="relative h-64 md:h-auto min-h-[300px]">
+                <Image
+                  src={images[currentImage].src}
+                  alt={images[currentImage].alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover transition-opacity duration-300"
+                  priority={currentImage === 0}
+                  loading={currentImage === 0 ? "eager" : "lazy"}
+                />
+                {/* Navigation Arrows */}
                 <button
-                  key={it.file}
-                  onClick={() => openAt(i)}
-                  className="group relative overflow-hidden rounded-lg bg-muted focus:outline-none"
-                  aria-label={`Open ${it.name}`}
+                  onClick={prevImage}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-10"
+                  aria-label="Previous image"
                 >
-                  {it.type === 'image' ? (
-                    <img src={it.url} alt={it.name} loading="lazy" className="w-full h-40 object-cover group-hover:scale-105 transition-transform" />
-                  ) : (
-                    <div className="relative w-full h-40 bg-black/5 flex items-center justify-center">
-                      {it.poster ? (
-                        <img src={it.poster} alt={`Poster for ${it.name}`} loading="lazy" className="w-full h-40 object-cover" />
-                      ) : (
-                        <div className="text-white/80">Video</div>
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" className="text-white/90">
-                          <path d="M7 6v12l10-6L7 6z" fill="currentColor" />
-                        </svg>
-                      </div>
-                    </div>
-                  )}
-                  <div className="absolute bottom-2 left-2 right-2 text-xs text-white/90 bg-black/40 backdrop-blur-sm rounded px-2 py-1">
-                    {it.name}
-                  </div>
+                  <ChevronLeft className="h-5 w-5" />
                 </button>
-              ))}
-            </div>
-
-            <Dialog open={open} onOpenChange={setOpen}>
-              <DialogContent className="max-w-4xl w-full p-0 bg-transparent shadow-none">
-                <div className="relative bg-background rounded-lg overflow-hidden">
-                  <div className="absolute top-3 right-3 z-30">
-                    <Button variant="ghost" size="icon" onClick={() => setOpen(false)} aria-label="Close">
-                      <X />
-                    </Button>
-                  </div>
-
-                  <div className="flex items-center gap-4 px-4 py-6">
-                    <Button variant="ghost" size="icon" onClick={prev} aria-label="Previous">
-                      <ArrowLeft />
-                    </Button>
-
-                    <div className="flex-1 min-h-[320px] flex items-center justify-center">
-                      <img src={imageItems[index]?.url} alt={imageItems[index]?.name} className="max-h-[70vh] w-auto h-auto object-contain" />
-                    </div>
-
-                    <Button variant="ghost" size="icon" onClick={next} aria-label="Next">
-                      <ArrowRight />
-                    </Button>
-                  </div>
-                  <div className="px-6 pb-6">
-                    <div className="text-sm font-medium">{imageItems[index]?.name}</div>
-                    <div className="text-xs text-muted-foreground mt-2">{imageItems[index]?.file}</div>
-                  </div>
+                <button
+                  onClick={nextImage}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-10"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+                {/* Dots Indicator */}
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                  {images.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentImage(idx)}
+                      className={`w-2 h-2 rounded-full transition-colors ${idx === currentImage ? 'bg-primary' : 'bg-white/50'}`}
+                      aria-label={`Go to image ${idx + 1}`}
+                    />
+                  ))}
                 </div>
-              </DialogContent>
-            </Dialog>
-          </>
-        )}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 md:hidden z-10">
+                  <h3 className="text-white text-xl font-bold flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-primary" />
+                    Our Office
+                  </h3>
+                </div>
+              </div>
+
+              {/* Content Section */}
+              <CardContent className="p-6 md:p-8 flex flex-col justify-center">
+                <h3 className="text-2xl font-bold mb-4 flex items-center gap-2 hidden md:flex">
+                  <MapPin className="h-6 w-6 text-primary" />
+                  Our Office
+                </h3>
+                <div className="space-y-4 text-muted-foreground leading-relaxed">
+                  <p>
+                    Ahmedabad, and Gujarat at large, known as <strong className="text-foreground">Pharmacy of the World</strong> contributes nearly <strong className="text-primary">33%</strong> of India&apos;s pharmaceutical turnover and <strong className="text-primary">28%</strong> of its pharma exports.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Titanium City Center</strong> is one of Ahmedabad&apos;s most prestigious business landmarks.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Accessibility:</strong> Located near the 132 Feet Ring Road and SG Highway, it provides easy transit for international clients arriving via the Sardar Vallabhbhai Patel International Airport.
+                  </p>
+                </div>
+              </CardContent>
+            </div>
+          </Card>
+        </div>
       </div>
     </section>
   );
