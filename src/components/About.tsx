@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Target, Cpu, Shield, Droplet, Wind, CheckCircle, Crosshair, ShieldCheck } from 'lucide-react';
 import ScrollFloat from '@/components/ui/ScrollFloat';
@@ -38,11 +39,14 @@ const TeamCard = () => {
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
               {/* Profile Picture */}
               <div className="flex-shrink-0">
-                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-primary/20 shadow-lg">
-                  <img
+                <div className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden border-4 border-primary/20 shadow-lg">
+                  <Image
                     src={member.image}
                     alt={member.alt}
-                    className="w-full h-full object-cover object-center"
+                    fill
+                    sizes="(max-width: 640px) 128px, 160px"
+                    className="object-cover object-center"
+                    loading="lazy"
                   />
                 </div>
               </div>
@@ -141,11 +145,16 @@ const About = () => {
 
           {/* Peaceful Image */}
           <div className="w-full mb-12 flex justify-center">
-            <img
-              src="/peaceful.jpg"
-              alt="Peaceful environment"
-              className="w-full max-w-4xl h-auto rounded-2xl shadow-xl object-cover"
-            />
+            <div className="relative w-full max-w-4xl aspect-video">
+              <Image
+                src="/peaceful.jpg"
+                alt="Peaceful environment representing Z Axis Pharmachine philosophy"
+                fill
+                sizes="(max-width: 1024px) 100vw, 896px"
+                className="rounded-2xl shadow-xl object-cover"
+                loading="lazy"
+              />
+            </div>
           </div>
 
           {/* Company Description */}

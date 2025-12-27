@@ -8,6 +8,9 @@ import {
     SITE_URL,
     SITE_DESCRIPTION,
     ORGANIZATION,
+    LOCATION,
+    CONTACT,
+    SERVICES,
 } from "@/lib/seo.config";
 
 // Types for JSON-LD schemas
@@ -64,7 +67,68 @@ export function OrganizationSchema({
     );
 }
 
-// WebSite Schema
+// LocalBusiness Schema - Critical for local SEO
+export function LocalBusinessSchema() {
+    const schema = {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "@id": `${SITE_URL}/#localbusiness`,
+        name: SITE_NAME,
+        description: SITE_DESCRIPTION,
+        url: SITE_URL,
+        logo: ORGANIZATION.logo,
+        image: `${SITE_URL}/og_Image.png`,
+        telephone: CONTACT.telephone,
+        email: CONTACT.email,
+        address: {
+            "@type": "PostalAddress",
+            streetAddress: LOCATION.streetAddress,
+            addressLocality: LOCATION.addressLocality,
+            addressRegion: LOCATION.addressRegion,
+            postalCode: LOCATION.postalCode,
+            addressCountry: LOCATION.addressCountry,
+        },
+        geo: {
+            "@type": "GeoCoordinates",
+            latitude: LOCATION.geo.latitude,
+            longitude: LOCATION.geo.longitude,
+        },
+        openingHoursSpecification: {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            opens: "09:00",
+            closes: "18:00",
+        },
+        priceRange: "$$$",
+        areaServed: [
+            { "@type": "Country", name: "India" },
+            { "@type": "State", name: "Gujarat" },
+            { "@type": "City", name: "Ahmedabad" },
+        ],
+        hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "Pharmaceutical Packaging Systems",
+            itemListElement: SERVICES.map((service, index) => ({
+                "@type": "Offer",
+                itemOffered: {
+                    "@type": "Service",
+                    name: service.name,
+                    description: service.description,
+                },
+                position: index + 1,
+            })),
+        },
+    };
+
+    return (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+    );
+}
+
+// WebSite Schema with SearchAction
 export function WebSiteSchema({
     name = SITE_NAME,
     url = SITE_URL,
@@ -75,14 +139,16 @@ export function WebSiteSchema({
         "@id": `${SITE_URL}/#website`,
         name,
         url,
+        description: SITE_DESCRIPTION,
         publisher: {
             "@id": `${SITE_URL}/#organization`,
         },
+        inLanguage: "en-IN",
         potentialAction: {
             "@type": "SearchAction",
             target: {
                 "@type": "EntryPoint",
-                urlTemplate: `${url}/search?q={search_term_string}`,
+                urlTemplate: `${url}/?search={search_term_string}`,
             },
             "query-input": "required name=search_term_string",
         },
@@ -117,10 +183,43 @@ export function BreadcrumbSchema({ items }: BreadcrumbSchemaProps) {
     );
 }
 
+// FAQPage Schema - Great for featured snippets
+interface FAQItem {
+    question: string;
+    answer: string;
+}
+
+interface FAQSchemaProps {
+    faqs: FAQItem[];
+}
+
+export function FAQSchema({ faqs }: FAQSchemaProps) {
+    const schema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.answer,
+            },
+        })),
+    };
+
+    return (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+    );
+}
+
 // Combined Schema Graph (for pages that need multiple schemas)
 interface SchemaGraphProps {
     includeOrganization?: boolean;
     includeWebSite?: boolean;
+    includeLocalBusiness?: boolean;
     breadcrumbs?: BreadcrumbItem[];
     customSchemas?: object[];
 }
@@ -128,6 +227,7 @@ interface SchemaGraphProps {
 export function SchemaGraph({
     includeOrganization = true,
     includeWebSite = true,
+    includeLocalBusiness = true,
     breadcrumbs,
     customSchemas = [],
 }: SchemaGraphProps) {
@@ -138,6 +238,7 @@ export function SchemaGraph({
             "@type": "Organization",
             "@id": `${SITE_URL}/#organization`,
             name: ORGANIZATION.name,
+            legalName: ORGANIZATION.legalName,
             url: ORGANIZATION.url,
             logo: {
                 "@type": "ImageObject",
@@ -146,8 +247,42 @@ export function SchemaGraph({
                 height: 512,
             },
             description: ORGANIZATION.description,
+            foundingDate: ORGANIZATION.foundingDate,
             address: ORGANIZATION.address,
+            geo: ORGANIZATION.geo,
             contactPoint: ORGANIZATION.contactPoint,
+            sameAs: ORGANIZATION.sameAs,
+        });
+    }
+
+    if (includeLocalBusiness) {
+        graph.push({
+            "@type": "LocalBusiness",
+            "@id": `${SITE_URL}/#localbusiness`,
+            name: SITE_NAME,
+            description: SITE_DESCRIPTION,
+            url: SITE_URL,
+            logo: ORGANIZATION.logo,
+            image: `${SITE_URL}/og_Image.png`,
+            telephone: CONTACT.telephone,
+            email: CONTACT.email,
+            address: {
+                "@type": "PostalAddress",
+                streetAddress: LOCATION.streetAddress,
+                addressLocality: LOCATION.addressLocality,
+                addressRegion: LOCATION.addressRegion,
+                postalCode: LOCATION.postalCode,
+                addressCountry: LOCATION.addressCountry,
+            },
+            geo: {
+                "@type": "GeoCoordinates",
+                latitude: LOCATION.geo.latitude,
+                longitude: LOCATION.geo.longitude,
+            },
+            areaServed: [
+                { "@type": "Country", name: "India" },
+                { "@type": "State", name: "Gujarat" },
+            ],
         });
     }
 
@@ -161,6 +296,7 @@ export function SchemaGraph({
             publisher: {
                 "@id": `${SITE_URL}/#organization`,
             },
+            inLanguage: "en-IN",
         });
     }
 
