@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Moon, Sun, Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
-import { QuoteModal } from './Modals';
+import { QuoteModal, BrochureModal } from './Modals';
 import type { SystemKey } from "@/lib/zaxis-systems";
 
 // About section subsections for dropdown
@@ -28,6 +28,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const [isBrochureModalOpen, setIsBrochureModalOpen] = useState(false);
   const [quotePrefill, setQuotePrefill] = useState<
     { productInterest?: SystemKey; product?: string } | undefined
   >(undefined);
@@ -286,6 +287,12 @@ const Header = () => {
                     {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                   </Button>
                   <Button
+                    variant="outline"
+                    onClick={() => setIsBrochureModalOpen(true)}
+                  >
+                    Get Brochure
+                  </Button>
+                  <Button
                     onClick={() => {
                       setQuotePrefill(undefined);
                       setIsQuoteModalOpen(true);
@@ -310,6 +317,10 @@ const Header = () => {
           setIsQuoteModalOpen(open);
           if (!open) setQuotePrefill(undefined);
         }}
+      />
+      <BrochureModal
+        isOpen={isBrochureModalOpen}
+        onOpenChange={setIsBrochureModalOpen}
       />
     </>
   );

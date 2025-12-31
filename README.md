@@ -112,8 +112,9 @@ Z AXIS Pharmachine Concepts is a leading provider of pharmaceutical packaging sy
 
 ### 📧 Contact & Forms
 - **Quote Request Modal** - Product inquiry forms
+- **Get Brochure Modal** - Lead capture before brochure access
 - **Contact Form** - Direct email via SMTP
-- **Side Contact Bar** - Quick access contact options
+- **Side Contact Bar** - Quick access contact options with auto-hide on scroll
 
 ### 🏭 Product Showcase
 - **Dynamic Product Gallery** - Category-based filtering
@@ -279,7 +280,18 @@ npm run start
 
 ## 📦 Product Updates
 
-### 2025-12-27 (Latest)
+### 2025-12-31 (Latest)
+- **Get Brochure Feature**
+  - New "Get Brochure" button in header next to "Get Quote"
+  - Modal form collects lead details (email, phone, company)
+  - Sends lead info via SMTP before granting brochure access
+  - Opens FlowPaper brochure in new tab after form submission
+- **Side Contact Bar Enhancements**
+  - Added "Get Brochure" quick action with document icon
+  - Auto-hide on scroll down, reappear on scroll up
+  - Smooth slide animation transitions
+
+### 2025-12-27
 - **SEO Enhancements**
   - Added 30+ targeted keywords including location-based terms
   - Implemented LocalBusiness schema for local search

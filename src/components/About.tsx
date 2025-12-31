@@ -180,7 +180,7 @@ const About = () => {
                 WHY Z AXIS?
               </ScrollFloat>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                In injectable filling machines, X & Y axes only position the nozzle<br />
+                In injectable filling machines, X & Y axis only position the nozzle<br />
                 <strong className="text-foreground"><span className="text-primary">Z</span> AXIS defines how the product is filled.</strong>
               </p>
             </div>
