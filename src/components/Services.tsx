@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,12 +17,36 @@ const SYSTEM_ICONS: Record<SystemKey, React.ReactNode> = {
   core: <Flame className="h-8 w-8 text-primary" />,
 };
 
+// Map hash to system key
+const HASH_TO_SYSTEM: Record<string, SystemKey> = {
+  'systems-pro': 'pro',
+  'systems-pre': 'pre',
+  'systems-core': 'core',
+};
+
 const Services = () => {
   const [active, setActive] = useState<SystemKey>("pro");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   const activeSystem = useMemo(() => SYSTEMS[active], [active]);
+
+  // Listen for hash changes and switch to the appropriate system
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash in HASH_TO_SYSTEM) {
+        setActive(HASH_TO_SYSTEM[hash]);
+      }
+    };
+
+    // Check initial hash on mount
+    handleHashChange();
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const openProductDetail = (product: Product) => {
     setSelectedProduct(product);
@@ -31,7 +55,12 @@ const Services = () => {
 
   return (
     <>
-      <section id="systems" className="py-16 lg:py-24">
+      <section id="systems" className="relative py-16 lg:py-24">
+        {/* Invisible anchors for direct navigation from header dropdown */}
+        <div id="systems-pro" className="absolute -mt-24" aria-hidden="true" />
+        <div id="systems-pre" className="absolute -mt-24" aria-hidden="true" />
+        <div id="systems-core" className="absolute -mt-24" aria-hidden="true" />
+
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <span className="inline-block text-sm font-semibold tracking-widest text-primary uppercase mb-4">
