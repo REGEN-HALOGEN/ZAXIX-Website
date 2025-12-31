@@ -29,9 +29,7 @@ const contactMethods = [
     icon: <Mail className="h-6 w-6 text-primary" />,
     title: "Email Us",
     lines: [
-      "zaxispharmachine@gmail.com",
-      "zaxispro1@gmail.com",
-      "vikram@zaxispharmachine.com",
+      "wellness@zaxispharmachine.com",
       "Website: www.zaxispharmchine.com",
     ],
   },
