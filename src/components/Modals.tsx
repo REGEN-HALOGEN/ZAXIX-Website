@@ -510,3 +510,180 @@ export const ProductDetailModal = ({
   );
 };
 
+// Brochure Modal - Collects lead info before granting brochure access
+interface BrochureModalProps {
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+}
+
+const BROCHURE_URL = "https://953f08e2-trial.flowpaper.com/ZAxisCORPPRESENTATIONPPT/";
+
+export const BrochureModal = ({ isOpen, onOpenChange }: BrochureModalProps) => {
+  const [form, setForm] = useState({
+    email: "",
+    phone: "",
+    company: "",
+  });
+  type BrochureErrors = Partial<{
+    email: string;
+    phone: string;
+    company: string;
+  }>;
+  const [formErrors, setFormErrors] = useState<BrochureErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneRegex = /^\d{10}$/;
+
+  const isFormValid = useMemo(() => {
+    return (
+      emailRegex.test(form.email.trim()) &&
+      phoneRegex.test((form.phone || '').replace(/\D/g, '')) &&
+      form.company.trim().length > 0
+    );
+  }, [form]);
+
+  const validateForm = () => {
+    const errors: BrochureErrors = {};
+    if (!emailRegex.test(form.email.trim())) errors.email = 'Enter a valid email address.';
+    const digits = (form.phone || '').replace(/\D/g, '').slice(0, 10);
+    if (!phoneRegex.test(digits)) errors.phone = 'Enter a 10-digit mobile number.';
+    if (!form.company.trim()) errors.company = 'Company name is required.';
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  // Reset form when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setForm({ email: "", phone: "", company: "" });
+      setFormErrors({});
+    }
+  }, [isOpen]);
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isSubmitting) return;
+
+    if (!validateForm()) return;
+
+    try {
+      setIsSubmitting(true);
+
+      const phoneDigits = (form.phone || '').replace(/\D/g, '').slice(0, 10);
+
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          kind: 'brochure',
+          subject: 'Z AXIS — Brochure Request',
+          fields: [
+            { label: 'Email', value: form.email },
+            { label: 'Phone', value: `+91${phoneDigits}` },
+            { label: 'Company', value: form.company },
+          ],
+        }),
+      });
+
+      const data = (await res.json().catch(() => null)) as null | { ok?: boolean; error?: string };
+      if (!res.ok || !data?.ok) throw new Error(data?.error || 'Failed to send email');
+
+      // Open brochure in new tab
+      window.open(BROCHURE_URL, '_blank', 'noopener,noreferrer');
+
+      onOpenChange(false);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to send request';
+      alert(message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[450px]">
+        <DialogHeader>
+          <DialogTitle>Get Our Brochure</DialogTitle>
+          <DialogDescription>
+            Please provide your details to access our corporate brochure.
+          </DialogDescription>
+        </DialogHeader>
+        <form id="brochureForm" className="grid gap-4 py-4" onSubmit={onSubmit}>
+          <div className="space-y-2">
+            <label htmlFor="brochureEmail" className="font-medium">Email Address <span className="text-red-600 ml-1" aria-hidden>*</span></label>
+            <Input
+              id="brochureEmail"
+              type="email"
+              placeholder="you@company.com"
+              value={form.email}
+              onChange={(e) => {
+                setForm((p) => ({ ...p, email: e.target.value }));
+                setFormErrors((f) => ({ ...f, email: undefined }));
+              }}
+              aria-required
+              aria-invalid={!!formErrors.email}
+            />
+            {formErrors.email && <p className="text-sm text-destructive mt-1">{formErrors.email}</p>}
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="brochurePhone" className="font-medium">Phone Number <span className="text-red-600 ml-1" aria-hidden>*</span></label>
+            <div className="flex">
+              <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 bg-muted text-sm">+91</span>
+              <Input
+                id="brochurePhone"
+                type="tel"
+                placeholder="Enter your mobile no."
+                value={form.phone}
+                onChange={(e) => {
+                  const digits = (e.target.value || '').replace(/\D/g, '').slice(0, 10);
+                  setForm((p) => ({ ...p, phone: digits }));
+                  setFormErrors((f) => ({ ...f, phone: undefined }));
+                }}
+                className="rounded-l-none"
+                aria-required
+                aria-invalid={!!formErrors.phone}
+              />
+            </div>
+            {formErrors.phone && <p className="text-sm text-destructive mt-1">{formErrors.phone}</p>}
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="brochureCompany" className="font-medium">Company Name <span className="text-red-600 ml-1" aria-hidden>*</span></label>
+            <Input
+              id="brochureCompany"
+              placeholder="Your Company Ltd."
+              value={form.company}
+              onChange={(e) => {
+                setForm((p) => ({ ...p, company: e.target.value }));
+                setFormErrors((f) => ({ ...f, company: undefined }));
+              }}
+              aria-required
+              aria-invalid={!!formErrors.company}
+            />
+            {formErrors.company && <p className="text-sm text-destructive mt-1">{formErrors.company}</p>}
+          </div>
+        </form>
+        <DialogFooter>
+          <DialogClose asChild>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button type="button" variant="secondary">Cancel</Button>
+            </motion.div>
+          </DialogClose>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              type="submit"
+              form="brochureForm"
+              disabled={!isFormValid || isSubmitting}
+              className={`${(!isFormValid || isSubmitting) ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              {isSubmitting ? 'Processing…' : 'Get Brochure'}
+            </Button>
+          </motion.div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
