@@ -14,10 +14,17 @@ const aboutSubsections = [
   { href: "#about-team", label: "Team Z Axis" },
 ];
 
+// Systems section subsections for dropdown
+const systemsSubsections = [
+  { href: "#systems-pro", label: "ZAxis PRO" },
+  { href: "#systems-pre", label: "ZAxis PRE" },
+  { href: "#systems-core", label: "ZAxis CORE" },
+];
+
 const navLinks = [
   { href: "#home", label: "Home" },
   { href: "#about", label: "About", hasDropdown: true, subsections: aboutSubsections },
-  { href: "#systems", label: "Systems" },
+  { href: "#systems", label: "Systems", hasDropdown: true, subsections: systemsSubsections },
   { href: "#infrastructure", label: "Infrastructure" },
   { href: "#media", label: "Media" },
   { href: "#careers", label: "Careers" },
@@ -238,8 +245,10 @@ const Header = () => {
                                 if (window.location.pathname === '/') {
                                   const el = document.getElementById(subId);
                                   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                  setActiveSection('about');
+                                  setActiveSection(sectionId);
                                   window.history.replaceState(null, '', sub.href);
+                                  // Dispatch hashchange event so other components react to the change
+                                  window.dispatchEvent(new HashChangeEvent('hashchange'));
                                 } else {
                                   window.location.href = `/${sub.href}`;
                                 }
