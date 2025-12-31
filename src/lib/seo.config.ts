@@ -42,7 +42,7 @@ export const ORGANIZATION = {
     name: SITE_NAME,
     legalName: "Z AXIS Pharmachine Concepts India Private Limited",
     url: SITE_URL,
-    logo: `${SITE_URL}/logo.svg`,
+    logo: `${SITE_URL}/publiclogo512.png`,
     description: SITE_DESCRIPTION,
     foundingDate: "2024",
     address: {
