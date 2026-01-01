@@ -26,8 +26,8 @@ const ITEMS = [
   },
   {
     key: "phone",
-    href: "tel:+917945928496",
-    label: "+91 79 45928496",
+    href: "tel:+918200780207",
+    label: "+91 8200780207",
     icon: Phone,
   },
 ] as const;
