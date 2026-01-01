@@ -1,10 +1,10 @@
-import { getProducts } from '@/lib/outstatic';
+import { getCMSProducts } from '@/lib/outstatic';
 import Products from './Products';
 
 // Server component that fetches CMS data and passes to client component
 export default function ProductsWithCMS() {
     // Fetch products from CMS (server-side)
-    const cmsProducts = getProducts();
+    const cmsProducts = getCMSProducts();
 
     // Transform CMS products to match component interface
     const transformedProducts = cmsProducts.map(p => ({

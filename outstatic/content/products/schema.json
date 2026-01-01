@@ -2,6 +2,13 @@
     "title": "products",
     "type": "object",
     "properties": {
+        "system": {
+            "required": true,
+            "description": "Z Axis System: pro, pre, or core",
+            "fieldType": "String",
+            "dataType": "string",
+            "title": "System (pro/pre/core)"
+        },
         "badge": {
             "required": true,
             "description": "Product badge/category label (e.g., R&D, Plunger & Label)",
@@ -10,7 +17,7 @@
             "title": "Badge"
         },
         "category": {
-            "required": true,
+            "required": false,
             "description": "Product category: fill-finish, processing, or sterile-support",
             "fieldType": "String",
             "dataType": "string",

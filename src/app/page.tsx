@@ -6,14 +6,11 @@ import { Suspense } from 'react';
 
 // CMS-enabled components (server components that fetch CMS data)
 import MediaSectionWithCMS from "@/components/MediaSectionWithCMS";
+import ServicesWithCMS from "@/components/ServicesWithCMS";
 
 // Dynamic imports for below-the-fold components to improve initial load
 const About = dynamic(() => import('@/components/About'), {
   loading: () => <div className="min-h-screen" />,
-});
-
-const Services = dynamic(() => import('@/components/Services'), {
-  loading: () => <div className="min-h-[600px]" />,
 });
 
 const InfrastructureSection = dynamic(() => import('@/components/InfrastructureSection'), {
@@ -49,8 +46,9 @@ export default function Home() {
           <About />
         </Suspense>
 
+        {/* Services/Systems Section - CMS enabled */}
         <Suspense fallback={<div className="min-h-[600px]" />}>
-          <Services />
+          <ServicesWithCMS />
         </Suspense>
 
         <Suspense fallback={<div className="min-h-[400px]" />}>
