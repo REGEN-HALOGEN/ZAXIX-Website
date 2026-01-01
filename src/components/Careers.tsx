@@ -43,12 +43,12 @@ const Careers = () => {
         <div className="grid lg:grid-cols-2 gap-8 items-stretch">
           <div className="space-y-6">
             <div className="overflow-hidden rounded-lg border bg-card">
-              <div className="relative aspect-video w-full">
+              <div className="relative aspect-[4/3] w-full">
                 <Image
                   src="/Carrers.png"
                   alt="Z Axis campus and flag"
                   fill
-                  className="object-cover object-top"
+                  className="object-contain"
                   sizes="(min-width: 1024px) 640px, 100vw"
                   priority={false}
                 />
