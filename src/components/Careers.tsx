@@ -114,7 +114,7 @@ const Careers = () => {
                 work?
               </p>
               <p className="text-foreground">
-                Reach to <span className="font-semibold">meeraaj@zaxispharmachine.com</span>
+                <span className="text-primary font-semibold">Send your CV to :</span> <a href="mailto:meeraaj@zaxispharmachine.com" className="font-semibold hover:underline hover:text-primary transition-colors">meeraaj@zaxispharmachine.com</a>
               </p>
             </CardContent>
           </Card>
