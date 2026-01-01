@@ -7,6 +7,24 @@ import { Button } from "@/components/ui/button";
 import { InquiryModal } from './Modals';
 import { motion } from 'framer-motion';
 
+// Types
+interface ProductSpec {
+  label: string;
+  value: string;
+}
+
+interface ProductItem {
+  category: string;
+  badge: string;
+  title: string;
+  specs: ProductSpec[];
+  image: string;
+}
+
+interface ProductsProps {
+  cmsProducts?: ProductItem[];
+}
+
 const PRODUCT_IMAGES = {
   pro: {
     rAndDClosing:
@@ -31,7 +49,8 @@ const PRODUCT_IMAGES = {
   },
 } as const;
 
-const productsData = [
+// Default fallback products data (used when CMS is empty)
+const defaultProductsData: ProductItem[] = [
   {
     category: "fill-finish",
     badge: "R&D",
@@ -170,10 +189,13 @@ const productsData = [
   },
 ];
 
-const Products = () => {
+const Products = ({ cmsProducts }: ProductsProps) => {
   const [filter, setFilter] = useState("all");
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState("");
+
+  // Use CMS products if available, otherwise fall back to default data
+  const productsData = cmsProducts && cmsProducts.length > 0 ? cmsProducts : defaultProductsData;
 
   const handleInquiry = (productTitle: string) => {
     setSelectedProduct(productTitle);
@@ -236,22 +258,22 @@ const Products = () => {
                     <CardTitle>{product.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                  <div className="space-y-3 mb-6">
-                    {product.specs.map((spec, i) => (
-                      <div key={i} className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">{spec.label}</span>
-                        <span className="font-medium">{spec.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex space-x-2">
-                    <Button className="w-full" variant="outline" asChild>
-                      <a href="#contact">More Info</a>
-                    </Button>
-                    <Button className="w-full" onClick={() => handleInquiry(product.title)}>Inquire Now</Button>
-                  </div>
-                </CardContent>
-              </Card>
+                    <div className="space-y-3 mb-6">
+                      {product.specs.map((spec, i) => (
+                        <div key={i} className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">{spec.label}</span>
+                          <span className="font-medium">{spec.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex space-x-2">
+                      <Button className="w-full" variant="outline" asChild>
+                        <a href="#contact">More Info</a>
+                      </Button>
+                      <Button className="w-full" onClick={() => handleInquiry(product.title)}>Inquire Now</Button>
+                    </div>
+                  </CardContent>
+                </Card>
               </motion.div>
             ))}
           </div>

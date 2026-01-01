@@ -4,6 +4,9 @@ import { SchemaGraph } from "@/components/seo";
 import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 
+// CMS-enabled components (server components that fetch CMS data)
+import MediaSectionWithCMS from "@/components/MediaSectionWithCMS";
+
 // Dynamic imports for below-the-fold components to improve initial load
 const About = dynamic(() => import('@/components/About'), {
   loading: () => <div className="min-h-screen" />,
@@ -16,10 +19,6 @@ const Services = dynamic(() => import('@/components/Services'), {
 const InfrastructureSection = dynamic(() => import('@/components/InfrastructureSection'), {
   ssr: false,
   loading: () => <div className="min-h-[400px]" />,
-});
-
-const MediaSection = dynamic(() => import('@/components/MediaSection'), {
-  loading: () => <div className="min-h-[300px]" />,
 });
 
 const Careers = dynamic(() => import('@/components/Careers'), {
@@ -58,8 +57,9 @@ export default function Home() {
           <InfrastructureSection />
         </Suspense>
 
+        {/* Media Section - CMS enabled */}
         <Suspense fallback={<div className="min-h-[300px]" />}>
-          <MediaSection />
+          <MediaSectionWithCMS />
         </Suspense>
 
         <Suspense fallback={<div className="min-h-[400px]" />}>

@@ -1,0 +1,34 @@
+{
+    "title": "products",
+    "type": "object",
+    "properties": {
+        "badge": {
+            "required": true,
+            "description": "Product badge/category label (e.g., R&D, Plunger & Label)",
+            "fieldType": "String",
+            "dataType": "string",
+            "title": "Badge"
+        },
+        "category": {
+            "required": true,
+            "description": "Product category: fill-finish, processing, or sterile-support",
+            "fieldType": "String",
+            "dataType": "string",
+            "title": "Category"
+        },
+        "image": {
+            "required": true,
+            "description": "Product image path (e.g., /Product/ZAxis Pro/...)",
+            "fieldType": "String",
+            "dataType": "string",
+            "title": "Image"
+        },
+        "specs": {
+            "required": false,
+            "description": "JSON array of specs: [{\"label\": \"...\", \"value\": \"...\"}]",
+            "fieldType": "Text",
+            "dataType": "string",
+            "title": "Specifications (JSON)"
+        }
+    }
+}

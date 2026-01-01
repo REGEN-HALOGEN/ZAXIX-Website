@@ -1,0 +1,34 @@
+{
+    "title": "media",
+    "type": "object",
+    "properties": {
+        "mediaType": {
+            "required": true,
+            "description": "Media type: video or image",
+            "fieldType": "String",
+            "dataType": "string",
+            "title": "Media Type"
+        },
+        "videoUrl": {
+            "required": false,
+            "description": "YouTube embed URL for videos",
+            "fieldType": "String",
+            "dataType": "string",
+            "title": "Video URL"
+        },
+        "thumbnail": {
+            "required": false,
+            "description": "Thumbnail image path",
+            "fieldType": "String",
+            "dataType": "string",
+            "title": "Thumbnail"
+        },
+        "description": {
+            "required": false,
+            "description": "Description of the media item",
+            "fieldType": "Text",
+            "dataType": "string",
+            "title": "Description"
+        }
+    }
+}
