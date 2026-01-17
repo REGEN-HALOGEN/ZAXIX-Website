@@ -39,10 +39,10 @@ const Footer = () => {
             </p>
 
             <div className="flex items-center gap-4">
-              <Link href="https://linkedin.com" target="_blank" className="p-2 bg-primary/10 rounded-full hover:bg-primary hover:text-white transition-all duration-300">
+              <Link href="https://www.linkedin.com/in/z-axis-pharmachine-concepts-india-41b323392?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" className="p-2 bg-primary/10 rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                 <Linkedin className="h-5 w-5" />
               </Link>
-              <Link href="https://instagram.com" target="_blank" className="p-2 bg-primary/10 rounded-full hover:bg-primary hover:text-white transition-all duration-300">
+              <Link href="https://www.instagram.com/zaxis.pharmachine?igsh=MW51MXNmb3E4OGdrNA%3D%3D&utm_source=qr" target="_blank" className="p-2 bg-primary/10 rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                 <Instagram className="h-5 w-5" />
               </Link>
               <Link href="https://twitter.com" target="_blank" className="p-2 bg-primary/10 rounded-full hover:bg-primary hover:text-white transition-all duration-300">

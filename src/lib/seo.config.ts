@@ -65,9 +65,8 @@ export const ORGANIZATION = {
         availableLanguage: ["English", "Hindi", "Gujarati"],
     },
     sameAs: [
-        // Add social media URLs here when available
-        // "https://www.linkedin.com/company/zaxispharmachine",
-        // "https://twitter.com/zaxispharmachine",
+        "https://www.instagram.com/zaxis.pharmachine?igsh=MW51MXNmb3E4OGdrNA%3D%3D&utm_source=qr",
+        "https://www.linkedin.com/in/z-axis-pharmachine-concepts-india-41b323392?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
     ],
 };
 
