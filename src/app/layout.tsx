@@ -5,6 +5,7 @@ import "./globals.css";
 import StartupLoader from "@/components/StartupLoader";
 import SideContactBar from "@/components/SideContactBar";
 import { LoadingProvider } from "@/context/LoadingContext";
+import { Analytics } from "@vercel/analytics/react";
 
 import StarsBackground from "@/components/ui/StarsBackground";
 
@@ -144,6 +145,7 @@ export default function RootLayout({
           <SideContactBar />
           {children}
         </LoadingProvider>
+        <Analytics />
       </body>
     </html>
   );
