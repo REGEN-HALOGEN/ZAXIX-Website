@@ -42,9 +42,25 @@ const Header = () => {
   const [activeSection, setActiveSection] = useState<string>("home");
 
   const activeSectionRef = useRef(activeSection);
+  // Lock to prevent scroll detection during smooth scroll navigation
+  const scrollLockRef = useRef(false);
+  const scrollLockTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     activeSectionRef.current = activeSection;
   }, [activeSection]);
+
+  // Helper to lock scroll detection temporarily
+  const lockScrollDetection = () => {
+    scrollLockRef.current = true;
+    if (scrollLockTimeoutRef.current) {
+      clearTimeout(scrollLockTimeoutRef.current);
+    }
+    // Unlock after smooth scroll animation completes (~800ms)
+    scrollLockTimeoutRef.current = setTimeout(() => {
+      scrollLockRef.current = false;
+    }, 800);
+  };
 
   useEffect(() => {
     const media = window.matchMedia?.('(prefers-color-scheme: dark)');
@@ -136,6 +152,8 @@ const Header = () => {
 
     let ticking = false;
     const onScroll = () => {
+      // Skip detection during smooth scroll navigation
+      if (scrollLockRef.current) return;
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
@@ -200,9 +218,11 @@ const Header = () => {
                       setIsMenuOpen(false);
                       const id = sectionId;
                       if (window.location.pathname === '/') {
+                        // Lock scroll detection during smooth scroll
+                        lockScrollDetection();
+                        setActiveSection(id);
                         const el = document.getElementById(id);
                         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        setActiveSection(id);
                         // update hash without jumping
                         window.history.replaceState(null, '', `#${id}`);
                       } else {
@@ -243,9 +263,11 @@ const Header = () => {
                                 e.preventDefault();
                                 setIsMenuOpen(false);
                                 if (window.location.pathname === '/') {
+                                  // Lock scroll detection during smooth scroll
+                                  lockScrollDetection();
+                                  setActiveSection(sectionId);
                                   const el = document.getElementById(subId);
                                   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                  setActiveSection(sectionId);
                                   window.history.replaceState(null, '', sub.href);
                                   // Dispatch hashchange event so other components react to the change
                                   window.dispatchEvent(new HashChangeEvent('hashchange'));
