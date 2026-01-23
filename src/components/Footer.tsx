@@ -45,7 +45,8 @@ const Footer = () => {
               <Link href="https://www.instagram.com/zaxis.pharmachine?igsh=MW51MXNmb3E4OGdrNA%3D%3D&utm_source=qr" target="_blank" className="p-2 bg-primary/10 rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                 <Instagram className="h-5 w-5" />
               </Link>
-              <Link href="https://twitter.com" target="_blank" className="p-2 bg-primary/10 rounded-full hover:bg-primary hover:text-white transition-all duration-300">
+              {/* TODO: Uncomment when social links are available */}
+              {/* <Link href="https://twitter.com" target="_blank" className="p-2 bg-primary/10 rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                 <Twitter className="h-5 w-5" />
               </Link>
               <Link href="https://youtube.com" target="_blank" className="p-2 bg-primary/10 rounded-full hover:bg-primary hover:text-white transition-all duration-300">
@@ -53,7 +54,7 @@ const Footer = () => {
               </Link>
               <Link href="https://facebook.com" target="_blank" className="p-2 bg-primary/10 rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                 <Facebook className="h-5 w-5" />
-              </Link>
+              </Link> */}
             </div>
           </div>
 
