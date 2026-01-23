@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import { Moon, Sun, Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
@@ -31,6 +31,13 @@ const navLinks = [
   { href: "#contact", label: "Contact" },
 ];
 
+// Map subsection IDs to their parent section for nav highlighting
+const getParentSection = (id: string): string => {
+  if (id.startsWith('about')) return 'about';
+  if (id.startsWith('systems')) return 'systems';
+  return id;
+};
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -41,27 +48,34 @@ const Header = () => {
   >(undefined);
   const [activeSection, setActiveSection] = useState<string>("home");
 
-  const activeSectionRef = useRef(activeSection);
-  // Lock to prevent scroll detection during smooth scroll navigation
-  const scrollLockRef = useRef(false);
-  const scrollLockTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  // Scroll to element with retry for dynamically loaded sections
+  // Uses CSS scroll-margin-top for offset (already in globals.css)
+  const scrollToSection = useCallback((id: string) => {
+    const tryScroll = (attempts: number) => {
+      const el = document.getElementById(id);
+      if (el) {
+        // Scroll first with smooth behavior
+        el.scrollIntoView({ behavior: 'smooth' });
+        // Then update hash after a delay to trigger hashchange for Services component
+        // without interfering with smooth scroll
+        setTimeout(() => {
+          if (window.location.hash !== `#${id}`) {
+            window.history.pushState(null, '', `#${id}`);
+            // Dispatch hashchange event manually since pushState doesn't trigger it
+            window.dispatchEvent(new HashChangeEvent('hashchange'));
+          }
+        }, 100);
+        return;
+      }
+      // Element not found - retry for dynamic imports
+      if (attempts > 0) {
+        setTimeout(() => tryScroll(attempts - 1), 100);
+      }
+    };
+    tryScroll(20); // 2 seconds max wait
+  }, []);
 
-  useEffect(() => {
-    activeSectionRef.current = activeSection;
-  }, [activeSection]);
-
-  // Helper to lock scroll detection temporarily
-  const lockScrollDetection = () => {
-    scrollLockRef.current = true;
-    if (scrollLockTimeoutRef.current) {
-      clearTimeout(scrollLockTimeoutRef.current);
-    }
-    // Unlock after smooth scroll animation completes (~800ms)
-    scrollLockTimeoutRef.current = setTimeout(() => {
-      scrollLockRef.current = false;
-    }, 800);
-  };
-
+  // Dark mode detection
   useEffect(() => {
     const media = window.matchMedia?.('(prefers-color-scheme: dark)');
     if (!media) return;
@@ -74,11 +88,17 @@ const Header = () => {
       return () => media.removeEventListener('change', onChange);
     }
 
-    // Safari fallback
     media.addListener(onChange);
     return () => media.removeListener(onChange);
   }, []);
 
+  // Apply dark mode class
+  useEffect(() => {
+    if (isDarkMode) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+  }, [isDarkMode]);
+
+  // Quote modal event listener
   useEffect(() => {
     const onOpenQuote = (event: Event) => {
       const custom = event as CustomEvent<{ productInterest?: SystemKey; product?: string }>;
@@ -90,101 +110,85 @@ const Header = () => {
     return () => window.removeEventListener('zaxis:open-quote', onOpenQuote as EventListener);
   }, []);
 
+  // Scroll-based active section detection (only updates after scroll stops)
   useEffect(() => {
-    if (isDarkMode) document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
-  }, [isDarkMode]);
+    const mainSectionIds = navLinks.map(l => l.href.replace('#', ''));
+    const headerHeight = 96;
+    let scrollTimeout: NodeJS.Timeout | null = null;
 
-  useEffect(() => {
-    const initialHash = window.location.hash.replace('#', '');
-    if (initialHash) setActiveSection(initialHash);
+    const updateActiveSection = () => {
+      let currentSection = 'home';
 
-    const sectionIds = navLinks.map((l) => l.href.replace('#', ''));
+      for (const id of mainSectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
 
-    const setActiveIfChanged = (id: string) => {
-      if (!id) return;
-      if (activeSectionRef.current === id) return;
-      activeSectionRef.current = id;
-      setActiveSection(id);
-    };
-
-    // More stable approach than IntersectionObserver for mixed-height sections:
-    // Choose the LAST section whose top has passed a scroll anchor.
-    // This prevents "skipping" and removes jitter near boundaries.
-    const getScrollAnchorY = () => {
-      // fixed header height is h-20 (80px). Add a bit of padding.
-      return window.scrollY + 96;
-    };
-
-    let sectionTops: Array<{ id: string; top: number }> = [];
-
-    const recomputeSectionTops = () => {
-      sectionTops = sectionIds
-        .map((id) => {
-          const el = document.getElementById(id);
-          if (!el) return null;
-          const rect = el.getBoundingClientRect();
-          return { id, top: rect.top + window.scrollY };
-        })
-        .filter(Boolean) as Array<{ id: string; top: number }>;
-
-      sectionTops.sort((a, b) => a.top - b.top);
-    };
-
-    const detectActiveFromScroll = () => {
-      if (sectionTops.length === 0) return;
-      const anchorY = getScrollAnchorY();
-
-      // If we're at/near bottom, force last section
-      const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
-      if (nearBottom) {
-        setActiveIfChanged(sectionTops[sectionTops.length - 1].id);
-        return;
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= headerHeight + 100) {
+          currentSection = id;
+        }
       }
 
-      let activeId = sectionTops[0].id;
-      for (const s of sectionTops) {
-        if (s.top <= anchorY) activeId = s.id;
-        else break;
-      }
-      setActiveIfChanged(activeId);
+      setActiveSection(currentSection);
     };
 
-    let ticking = false;
+    // Debounced scroll handler - only updates after scroll stops
     const onScroll = () => {
-      // Skip detection during smooth scroll navigation
-      if (scrollLockRef.current) return;
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        // Recompute occasionally because dynamic content/images can shift layout.
-        recomputeSectionTops();
-        detectActiveFromScroll();
-        ticking = false;
-      });
-    };
-
-    // Initial compute (also after images load)
-    const onLoad = () => {
-      recomputeSectionTops();
-      detectActiveFromScroll();
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(updateActiveSection, 100);
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onLoad);
-    window.addEventListener('load', onLoad);
 
-    onLoad();
+    // Handle hash navigation (both initial load and click)
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      setActiveSection(getParentSection(hash));
+      scrollToSection(hash);
+    }
+
+    // MutationObserver to detect when dynamic sections load
+    // This fixes navigation on first load before sections exist
+    const observer = new MutationObserver(() => {
+      const currentHash = window.location.hash.replace('#', '');
+      if (currentHash) {
+        const el = document.getElementById(currentHash);
+        if (el) {
+          // Section just appeared - scroll to it
+          el.scrollIntoView({ behavior: 'smooth' });
+          setActiveSection(getParentSection(currentHash));
+        }
+      }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Initial check after a brief delay
+    setTimeout(updateActiveSection, 200);
 
     return () => {
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onLoad);
-      window.removeEventListener('load', onLoad);
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      observer.disconnect();
     };
-  }, []);
+  }, [scrollToSection]);
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
+  const toggleTheme = () => setIsDarkMode(!isDarkMode);
+
+  // Click handler with retry logic for dynamic sections
+  const handleNavClick = (e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    const id = href.replace('#', '');
+
+    // If not on home page, navigate with hash
+    if (window.location.pathname !== '/') {
+      window.location.href = `/${href}`;
+      return;
+    }
+
+    setIsMenuOpen(false);
+    setActiveSection(getParentSection(id));
+    scrollToSection(id);
   };
 
   return (
@@ -192,7 +196,7 @@ const Header = () => {
       <header className="bg-background/80 backdrop-blur-sm border-b border-border/40 fixed top-0 left-0 right-0 z-50">
         <div className="container mx-auto px-4">
           <nav className="flex items-center justify-between h-20">
-            <a href="#home" className="flex items-center gap-4">
+            <a href="#home" onClick={(e) => handleNavClick(e, '#home')} className="flex items-center gap-4">
               <Image
                 src={isDarkMode ? '/logo_header-light.svg' : '/logo_header.svg'}
                 alt="Z AXIS logo"
@@ -211,36 +215,11 @@ const Header = () => {
                   const sectionId = link.href.replace('#', '');
                   const isActive = activeSection === sectionId;
 
-                  const onClick = (e: React.MouseEvent) => {
-                    // Anchor link behavior: smooth scroll if on same page, otherwise navigate to home with hash
-                    if (link.href.startsWith('#')) {
-                      e.preventDefault();
-                      setIsMenuOpen(false);
-                      const id = sectionId;
-                      if (window.location.pathname === '/') {
-                        // Lock scroll detection during smooth scroll
-                        lockScrollDetection();
-                        setActiveSection(id);
-                        const el = document.getElementById(id);
-                        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        // update hash without jumping
-                        window.history.replaceState(null, '', `#${id}`);
-                      } else {
-                        // navigate to home with hash
-                        window.location.href = `/${link.href}`;
-                      }
-                    }
-
-                    // For non-hash links default behavior happens
-                  };
-
-                  // Render dropdown for items with subsections
                   if (link.hasDropdown && link.subsections) {
                     return (
                       <div key={link.href} className="relative group">
                         <button
-                          className={`relative flex items-center gap-1 transition-colors py-2 px-2 ${isActive ? 'text-primary' : 'text-foreground hover:text-primary'
-                            }`}
+                          className={`relative flex items-center gap-1 transition-colors py-2 px-2 ${isActive ? 'text-primary' : 'text-foreground hover:text-primary'}`}
                         >
                           <span className="relative">
                             {link.label}
@@ -254,53 +233,31 @@ const Header = () => {
                           <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
                         </button>
 
-                        {/* Dropdown menu */}
                         <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                           <div className="bg-background border border-border/60 rounded-lg shadow-lg py-2 min-w-[180px] backdrop-blur-sm">
-                            {link.subsections.map((sub) => {
-                              const subId = sub.href.replace('#', '');
-                              const subOnClick = (e: React.MouseEvent) => {
-                                e.preventDefault();
-                                setIsMenuOpen(false);
-                                if (window.location.pathname === '/') {
-                                  // Lock scroll detection during smooth scroll
-                                  lockScrollDetection();
-                                  setActiveSection(sectionId);
-                                  const el = document.getElementById(subId);
-                                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                  window.history.replaceState(null, '', sub.href);
-                                  // Dispatch hashchange event so other components react to the change
-                                  window.dispatchEvent(new HashChangeEvent('hashchange'));
-                                } else {
-                                  window.location.href = `/${sub.href}`;
-                                }
-                              };
-                              return (
-                                <a
-                                  key={sub.href}
-                                  href={sub.href}
-                                  onClick={subOnClick}
-                                  className="block px-4 py-2 text-sm text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
-                                >
-                                  {sub.label}
-                                </a>
-                              );
-                            })}
+                            {link.subsections.map((sub) => (
+                              <a
+                                key={sub.href}
+                                href={sub.href}
+                                onClick={(e) => handleNavClick(e, sub.href)}
+                                className="block px-4 py-2 text-sm text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+                              >
+                                {sub.label}
+                              </a>
+                            ))}
                           </div>
                         </div>
                       </div>
                     );
                   }
 
-                  // Regular nav link
                   return (
                     <a
                       key={link.href}
                       href={link.href}
                       aria-current={isActive ? 'page' : undefined}
-                      onClick={onClick}
-                      className={`relative block md:inline-block transition-colors py-2 px-2 ${isActive ? 'text-primary' : 'text-foreground hover:text-primary'
-                        }`}
+                      onClick={(e) => handleNavClick(e, link.href)}
+                      className={`relative block md:inline-block transition-colors py-2 px-2 ${isActive ? 'text-primary' : 'text-foreground hover:text-primary'}`}
                     >
                       {link.label}
                       {isActive && (
@@ -317,18 +274,10 @@ const Header = () => {
                   <Button onClick={toggleTheme} variant="ghost" size="icon">
                     {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                   </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => setIsBrochureModalOpen(true)}
-                  >
+                  <Button variant="outline" onClick={() => setIsBrochureModalOpen(true)}>
                     Get Brochure
                   </Button>
-                  <Button
-                    onClick={() => {
-                      setQuotePrefill(undefined);
-                      setIsQuoteModalOpen(true);
-                    }}
-                  >
+                  <Button onClick={() => { setQuotePrefill(undefined); setIsQuoteModalOpen(true); }}>
                     Get Quote
                   </Button>
                 </div>
