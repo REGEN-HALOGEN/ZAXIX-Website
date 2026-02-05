@@ -131,10 +131,10 @@ export default function MediaSection() {
 
                     {/* Newsletter Carousel */}
                     <div className="relative max-w-3xl mx-auto">
-                        {/* Left Arrow - Page Navigation */}
+                        {/* Left Arrow - Page Navigation (hidden on mobile/tablet) */}
                         <button
                             onClick={prevPage}
-                            className="absolute left-0 md:-left-16 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center bg-primary/90 hover:bg-primary text-white rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+                            className="hidden lg:flex absolute -left-16 top-1/2 -translate-y-1/2 z-10 w-12 h-12 items-center justify-center bg-primary/90 hover:bg-primary text-white rounded-full shadow-lg transition-all duration-300 hover:scale-110"
                             aria-label="Previous page"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6">
@@ -142,16 +142,16 @@ export default function MediaSection() {
                             </svg>
                         </button>
 
-                        {/* Newsletter Page */}
-                        <div className="overflow-hidden rounded-lg shadow-xl border border-gray-200 dark:border-border/50">
+                        {/* Newsletter Page - Scrollable on mobile, transform-based on desktop */}
+                        <div className="overflow-x-auto lg:overflow-hidden rounded-lg shadow-xl border border-gray-200 dark:border-border/50 snap-x snap-mandatory scrollbar-hide">
                             <div
-                                className="flex transition-transform duration-500 ease-in-out"
-                                style={{ transform: `translateX(-${currentPage * 100}%)` }}
+                                className="flex"
+                                style={{ transform: `translateX(-${currentPage * 100}%)`, transition: 'transform 500ms ease-in-out' }}
                             >
                                 {editionPages.map((newsletter, index) => (
                                     <div
                                         key={`${activeEdition.edition}-${index}`}
-                                        className="flex-shrink-0 w-full"
+                                        className="flex-shrink-0 w-full snap-center"
                                     >
                                         <div className="relative bg-white dark:bg-card">
                                             <img
@@ -166,10 +166,10 @@ export default function MediaSection() {
                             </div>
                         </div>
 
-                        {/* Right Arrow - Page Navigation */}
+                        {/* Right Arrow - Page Navigation (hidden on mobile/tablet) */}
                         <button
                             onClick={nextPage}
-                            className="absolute right-0 md:-right-16 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center bg-primary/90 hover:bg-primary text-white rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+                            className="hidden lg:flex absolute -right-16 top-1/2 -translate-y-1/2 z-10 w-12 h-12 items-center justify-center bg-primary/90 hover:bg-primary text-white rounded-full shadow-lg transition-all duration-300 hover:scale-110"
                             aria-label="Next page"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6">
@@ -177,8 +177,8 @@ export default function MediaSection() {
                             </svg>
                         </button>
 
-                        {/* Page Indicators */}
-                        <div className="flex justify-center gap-3 mt-6">
+                        {/* Page Indicators (hidden on mobile/tablet since swipe is available) */}
+                        <div className="hidden lg:flex justify-center gap-3 mt-6">
                             {editionPages.map((_, index) => (
                                 <button
                                     key={index}
@@ -194,6 +194,11 @@ export default function MediaSection() {
                                 Page {currentPage + 1} of {editionPages.length}
                             </span>
                         </div>
+
+                        {/* Mobile swipe hint */}
+                        <p className="lg:hidden text-center text-sm text-muted-foreground mt-4">
+                            Swipe to view more pages
+                        </p>
                     </div>
                 </div>
 
