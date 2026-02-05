@@ -110,13 +110,22 @@ const Header = () => {
     return () => window.removeEventListener('zaxis:open-quote', onOpenQuote as EventListener);
   }, []);
 
-  // Scroll-based active section detection (only updates after scroll stops)
+  // Scroll-based active section detection
   useEffect(() => {
     const mainSectionIds = navLinks.map(l => l.href.replace('#', ''));
     const headerHeight = 96;
-    let scrollTimeout: NodeJS.Timeout | null = null;
+    let ticking = false;
 
     const updateActiveSection = () => {
+      // Check if we're at the bottom of the page
+      const isAtBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 50;
+
+      if (isAtBottom) {
+        // At the bottom, activate the last section (contact)
+        setActiveSection('contact');
+        return;
+      }
+
       let currentSection = 'home';
 
       for (const id of mainSectionIds) {
@@ -132,10 +141,15 @@ const Header = () => {
       setActiveSection(currentSection);
     };
 
-    // Debounced scroll handler - only updates after scroll stops
+    // Use requestAnimationFrame for smoother updates
     const onScroll = () => {
-      if (scrollTimeout) clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(updateActiveSection, 100);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateActiveSection();
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -147,29 +161,11 @@ const Header = () => {
       scrollToSection(hash);
     }
 
-    // MutationObserver to detect when dynamic sections load
-    // This fixes navigation on first load before sections exist
-    const observer = new MutationObserver(() => {
-      const currentHash = window.location.hash.replace('#', '');
-      if (currentHash) {
-        const el = document.getElementById(currentHash);
-        if (el) {
-          // Section just appeared - scroll to it
-          el.scrollIntoView({ behavior: 'smooth' });
-          setActiveSection(getParentSection(currentHash));
-        }
-      }
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-
     // Initial check after a brief delay
     setTimeout(updateActiveSection, 200);
 
     return () => {
       window.removeEventListener('scroll', onScroll);
-      if (scrollTimeout) clearTimeout(scrollTimeout);
-      observer.disconnect();
     };
   }, [scrollToSection]);
 
