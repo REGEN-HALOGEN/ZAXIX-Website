@@ -13,25 +13,27 @@ import ScrollFloat from '@/components/ui/ScrollFloat';
 // ============================================
 const newsletterEditions = [
     // Add new editions here at the TOP (they will show first)
-    // Example for future edition:
-    // {
-    //     edition: "002",
-    //     title: "Z Axis Shot - Edition 002",
-    //     folder: "24126", // Date folder: Jan 24, 2026
-    //     pageCount: 3,    // Number of pages in this edition
-    // },
+    {
+        edition: "002",
+        title: "Z Axis Shot - Edition 002",
+        folder: "020526", // Date folder: Feb 05, 2026
+        pageCount: 3,    // Number of pages in this edition
+        fileExtension: "jpg", // File extension for images
+    },
     {
         edition: "001",
         title: "Z Axis Shot - Edition 001",
         folder: "23126", // Date folder: Jan 23, 2026
         pageCount: 3,    // Number of pages in this edition
+        fileExtension: "jpeg", // File extension for images
     },
 ];
 
 // Helper function to generate page paths for an edition
 const getEditionPages = (edition: typeof newsletterEditions[0]) => {
+    const ext = edition.fileExtension || "jpeg";
     return Array.from({ length: edition.pageCount }, (_, i) => ({
-        src: `/Media/Newsletter/${edition.folder}/${i + 1}.jpeg`,
+        src: `/Media/Newsletter/${edition.folder}/${i + 1}.${ext}`,
         alt: `${edition.title} - Page ${i + 1}`,
     }));
 };
@@ -195,7 +197,7 @@ export default function MediaSection() {
                     </div>
                 </div>
 
-                {/* Videos Subsection */}
+                {/* Videos Subsection - Commented out for now
                 <div>
                     <div className="text-center mb-8">
                         <h3 className="text-2xl md:text-3xl font-bold mb-2">
@@ -206,7 +208,6 @@ export default function MediaSection() {
                         </p>
                     </div>
 
-                    {/* Video Gallery */}
                     <div className="max-w-4xl mx-auto">
                         <div className="relative overflow-hidden rounded-lg shadow-xl border border-gray-200 dark:border-border/50 bg-black">
                             <video
@@ -226,6 +227,7 @@ export default function MediaSection() {
                         </div>
                     </div>
                 </div>
+                */}
             </div>
         </section>
     );
