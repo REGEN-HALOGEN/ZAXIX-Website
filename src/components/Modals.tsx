@@ -17,6 +17,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { motion } from 'framer-motion';
 import { SYSTEMS, type SystemKey } from "@/lib/zaxis-systems";
 
+import { FlipBook } from './FlipBook';
+
 interface QuoteModalProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
@@ -510,13 +512,15 @@ export const ProductDetailModal = ({
   );
 };
 
-// Brochure Modal - Collects lead info before granting brochure access
+// Brochure slide images – one per page, in order
+const BROCHURE_PAGES: string[] = Array.from({ length: 21 }, (_, i) =>
+  `/Brochure/zaxisflipbook/Z Axis  CORP PRESENTATION PPT-${i + 1}.png`
+);
+
 interface BrochureModalProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
 }
-
-const BROCHURE_URL = "https://953f08e2-trial.flowpaper.com/ZAxisCORPPRESENTATIONPPT/";
 
 export const BrochureModal = ({ isOpen, onOpenChange }: BrochureModalProps) => {
   const [form, setForm] = useState({
@@ -531,6 +535,7 @@ export const BrochureModal = ({ isOpen, onOpenChange }: BrochureModalProps) => {
   }>;
   const [formErrors, setFormErrors] = useState<BrochureErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showBrochure, setShowBrochure] = useState(false);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^\d{10}$/;
@@ -553,11 +558,12 @@ export const BrochureModal = ({ isOpen, onOpenChange }: BrochureModalProps) => {
     return Object.keys(errors).length === 0;
   };
 
-  // Reset form when modal closes
+  // Reset form state when modal closes
   useEffect(() => {
     if (!isOpen) {
       setForm({ email: "", phone: "", company: "" });
       setFormErrors({});
+      setShowBrochure(false);
     }
   }, [isOpen]);
 
@@ -572,30 +578,32 @@ export const BrochureModal = ({ isOpen, onOpenChange }: BrochureModalProps) => {
 
       const phoneDigits = (form.phone || '').replace(/\D/g, '').slice(0, 10);
 
-      const res = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          kind: 'brochure',
-          subject: 'Z AXIS — Brochure Request',
-          fields: [
-            { label: 'Email', value: form.email },
-            { label: 'Phone', value: `+91${phoneDigits}` },
-            { label: 'Company', value: form.company },
-          ],
-        }),
-      });
+      // Try to send email, but don't block brochure access if it fails
+      try {
+        const res = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            kind: 'brochure',
+            subject: 'Z AXIS — Brochure Request',
+            fields: [
+              { label: 'Email', value: form.email },
+              { label: 'Phone', value: `+91${phoneDigits}` },
+              { label: 'Company', value: form.company },
+            ],
+          }),
+        });
 
-      const data = (await res.json().catch(() => null)) as null | { ok?: boolean; error?: string };
-      if (!res.ok || !data?.ok) throw new Error(data?.error || 'Failed to send email');
+        const data = (await res.json().catch(() => null)) as null | { ok?: boolean; error?: string };
+        if (!res.ok || !data?.ok) {
+          console.warn('Email notification failed:', data?.error || 'Unknown error');
+        }
+      } catch (emailErr) {
+        console.warn('Email notification failed:', emailErr);
+      }
 
-      // Open brochure in new tab
-      window.open(BROCHURE_URL, '_blank', 'noopener,noreferrer');
-
-      onOpenChange(false);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to send request';
-      alert(message);
+      // Show flipbook regardless of email status
+      setShowBrochure(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -603,86 +611,107 @@ export const BrochureModal = ({ isOpen, onOpenChange }: BrochureModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[450px]">
-        <DialogHeader>
-          <DialogTitle>Get Our Brochure</DialogTitle>
-          <DialogDescription>
-            Please provide your details to access our corporate brochure.
-          </DialogDescription>
-        </DialogHeader>
-        <form id="brochureForm" className="grid gap-4 py-4" onSubmit={onSubmit}>
-          <div className="space-y-2">
-            <label htmlFor="brochureEmail" className="font-medium">Email Address <span className="text-red-600 ml-1" aria-hidden>*</span></label>
-            <Input
-              id="brochureEmail"
-              type="email"
-              placeholder="you@company.com"
-              value={form.email}
-              onChange={(e) => {
-                setForm((p) => ({ ...p, email: e.target.value }));
-                setFormErrors((f) => ({ ...f, email: undefined }));
-              }}
-              aria-required
-              aria-invalid={!!formErrors.email}
-            />
-            {formErrors.email && <p className="text-sm text-destructive mt-1">{formErrors.email}</p>}
-          </div>
+      <DialogContent className={showBrochure ? "sm:max-w-[95vw] lg:max-w-[1200px]" : "sm:max-w-[450px]"}>
+        {showBrochure ? (
+          <>
+            <DialogHeader>
+              <DialogTitle>Z AXIS Corporate Brochure</DialogTitle>
+              <DialogDescription>
+                Browse through our corporate presentation.
+              </DialogDescription>
+            </DialogHeader>
+            <FlipBook pages={BROCHURE_PAGES} />
+            <DialogFooter>
+              <DialogClose asChild>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button type="button" variant="secondary">Close</Button>
+                </motion.div>
+              </DialogClose>
+            </DialogFooter>
+          </>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle>Get Our Brochure</DialogTitle>
+              <DialogDescription>
+                Please provide your details to access our corporate brochure.
+              </DialogDescription>
+            </DialogHeader>
+            <form id="brochureForm" className="grid gap-4 py-4" onSubmit={onSubmit}>
+              <div className="space-y-2">
+                <label htmlFor="brochureEmail" className="font-medium">Email Address <span className="text-red-600 ml-1" aria-hidden>*</span></label>
+                <Input
+                  id="brochureEmail"
+                  type="email"
+                  placeholder="you@company.com"
+                  value={form.email}
+                  onChange={(e) => {
+                    setForm((p) => ({ ...p, email: e.target.value }));
+                    setFormErrors((f) => ({ ...f, email: undefined }));
+                  }}
+                  aria-required
+                  aria-invalid={!!formErrors.email}
+                />
+                {formErrors.email && <p className="text-sm text-destructive mt-1">{formErrors.email}</p>}
+              </div>
 
-          <div className="space-y-2">
-            <label htmlFor="brochurePhone" className="font-medium">Phone Number <span className="text-red-600 ml-1" aria-hidden>*</span></label>
-            <div className="flex">
-              <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 bg-muted text-sm">+91</span>
-              <Input
-                id="brochurePhone"
-                type="tel"
-                placeholder="Enter your mobile no."
-                value={form.phone}
-                onChange={(e) => {
-                  const digits = (e.target.value || '').replace(/\D/g, '').slice(0, 10);
-                  setForm((p) => ({ ...p, phone: digits }));
-                  setFormErrors((f) => ({ ...f, phone: undefined }));
-                }}
-                className="rounded-l-none"
-                aria-required
-                aria-invalid={!!formErrors.phone}
-              />
-            </div>
-            {formErrors.phone && <p className="text-sm text-destructive mt-1">{formErrors.phone}</p>}
-          </div>
+              <div className="space-y-2">
+                <label htmlFor="brochurePhone" className="font-medium">Phone Number <span className="text-red-600 ml-1" aria-hidden>*</span></label>
+                <div className="flex">
+                  <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 bg-muted text-sm">+91</span>
+                  <Input
+                    id="brochurePhone"
+                    type="tel"
+                    placeholder="Enter your mobile no."
+                    value={form.phone}
+                    onChange={(e) => {
+                      const digits = (e.target.value || '').replace(/\D/g, '').slice(0, 10);
+                      setForm((p) => ({ ...p, phone: digits }));
+                      setFormErrors((f) => ({ ...f, phone: undefined }));
+                    }}
+                    className="rounded-l-none"
+                    aria-required
+                    aria-invalid={!!formErrors.phone}
+                  />
+                </div>
+                {formErrors.phone && <p className="text-sm text-destructive mt-1">{formErrors.phone}</p>}
+              </div>
 
-          <div className="space-y-2">
-            <label htmlFor="brochureCompany" className="font-medium">Company Name <span className="text-red-600 ml-1" aria-hidden>*</span></label>
-            <Input
-              id="brochureCompany"
-              placeholder="Your Company Ltd."
-              value={form.company}
-              onChange={(e) => {
-                setForm((p) => ({ ...p, company: e.target.value }));
-                setFormErrors((f) => ({ ...f, company: undefined }));
-              }}
-              aria-required
-              aria-invalid={!!formErrors.company}
-            />
-            {formErrors.company && <p className="text-sm text-destructive mt-1">{formErrors.company}</p>}
-          </div>
-        </form>
-        <DialogFooter>
-          <DialogClose asChild>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button type="button" variant="secondary">Cancel</Button>
-            </motion.div>
-          </DialogClose>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button
-              type="submit"
-              form="brochureForm"
-              disabled={!isFormValid || isSubmitting}
-              className={`${(!isFormValid || isSubmitting) ? 'opacity-50 cursor-not-allowed' : ''}`}
-            >
-              {isSubmitting ? 'Processing…' : 'Get Brochure'}
-            </Button>
-          </motion.div>
-        </DialogFooter>
+              <div className="space-y-2">
+                <label htmlFor="brochureCompany" className="font-medium">Company Name <span className="text-red-600 ml-1" aria-hidden>*</span></label>
+                <Input
+                  id="brochureCompany"
+                  placeholder="Your Company Ltd."
+                  value={form.company}
+                  onChange={(e) => {
+                    setForm((p) => ({ ...p, company: e.target.value }));
+                    setFormErrors((f) => ({ ...f, company: undefined }));
+                  }}
+                  aria-required
+                  aria-invalid={!!formErrors.company}
+                />
+                {formErrors.company && <p className="text-sm text-destructive mt-1">{formErrors.company}</p>}
+              </div>
+            </form>
+            <DialogFooter>
+              <DialogClose asChild>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button type="button" variant="secondary">Cancel</Button>
+                </motion.div>
+              </DialogClose>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  type="submit"
+                  form="brochureForm"
+                  disabled={!isFormValid || isSubmitting}
+                  className={`${(!isFormValid || isSubmitting) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  {isSubmitting ? 'Processing…' : 'Get Brochure'}
+                </Button>
+              </motion.div>
+            </DialogFooter>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );

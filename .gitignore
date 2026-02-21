@@ -48,3 +48,9 @@ AGENTS.md
 
 # Large media files
 
+# docs
+/docs
+
+# IDE / workspace
+.vscode
+ZAXIX-Website.code-workspace

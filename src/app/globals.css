@@ -129,7 +129,7 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  
+
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
@@ -331,5 +331,130 @@ section:not(#home) {
   button,
   a {
     touch-action: manipulation;
+  }
+}
+
+/* ================================================================== */
+/*  FlipBook Component Styles                                         */
+/* ================================================================== */
+
+.flipbook-outer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.flipbook-sizer {
+  width: 100%;
+  height: 65vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, hsl(24 30% 6%) 0%, hsl(24 20% 12%) 100%);
+  box-shadow:
+    0 4px 24px hsl(0 0% 0% / 0.2),
+    0 1px 4px hsl(0 0% 0% / 0.15),
+    inset 0 1px 0 hsl(0 0% 100% / 0.04);
+}
+
+.flipbook-page {
+  background: #fff;
+  box-shadow: 0 2px 12px hsl(0 0% 0% / 0.15);
+  overflow: hidden;
+}
+
+.flipbook-page img {
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Navigation controls bar */
+.flipbook-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 20px;
+  border-radius: 999px;
+  background: hsl(var(--card) / 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid hsl(var(--border) / 0.5);
+  box-shadow: 0 2px 8px hsl(0 0% 0% / 0.08);
+}
+
+.flipbook-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.flipbook-nav-btn:hover:not(:disabled) {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-color: hsl(var(--primary));
+  transform: scale(1.08);
+}
+
+.flipbook-nav-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.flipbook-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.flipbook-page-indicator {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: hsl(var(--muted-foreground));
+  min-width: 60px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Loading spinner */
+.flipbook-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid hsl(var(--border));
+  border-top-color: hsl(var(--primary));
+  border-radius: 50%;
+  animation: flipbook-spin 0.8s linear infinite;
+}
+
+@keyframes flipbook-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive: stack pages vertically on narrow screens */
+@media (max-width: 640px) {
+  .flipbook-wrapper {
+    padding: 8px;
+  }
+
+  .flipbook-controls {
+    gap: 10px;
+    padding: 6px 14px;
+  }
+
+  .flipbook-nav-btn {
+    width: 32px;
+    height: 32px;
   }
 }
