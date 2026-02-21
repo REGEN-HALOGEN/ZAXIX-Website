@@ -39,55 +39,73 @@ Page.displayName = 'Page';
 export const FlipBook: React.FC<FlipBookProps> = ({ pages }) => {
     const [currentPage, setCurrentPage] = useState(0);
     const flipBookRef = useRef<any>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null);
+    const sizerRef = useRef<HTMLDivElement>(null);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // null = not yet measured; { width, height } = ready to render
+    const [dims, setDims] = useState<{ width: number; height: number } | null>(null);
 
     const totalPages = pages.length;
 
-    /* ---------- Compute flipbook page dims to fill the container -------- */
-    const computeDimensions = useCallback(() => {
-        if (!containerRef.current) return;
-        const rect = containerRef.current.getBoundingClientRect();
-        const containerW = rect.width;
-        const containerH = rect.height;
-
-        if (containerW === 0 || containerH === 0) return;
-
-        // Each visible page is half the container width (double-page spread)
-        const pageW = Math.floor(containerW / 2);
-        // The slide images are 16:9 — compute height from width
-        const pageH = Math.floor(pageW * (9 / 16));
-
-        // If the computed height exceeds available height, fit to height instead
-        if (pageH > containerH) {
-            const fittedH = containerH;
-            const fittedW = Math.floor(fittedH * (16 / 9));
-            setDimensions({ width: fittedW, height: fittedH });
-        } else {
-            setDimensions({ width: pageW, height: pageH });
-        }
-    }, []);
-
-    /* ---------- Use ResizeObserver for reliable sizing ------------------ */
-    useEffect(() => {
-        const el = containerRef.current;
+    /* ---------------------------------------------------------------- */
+    /*  Measure the sizer element and compute page dimensions            */
+    /*  react-pageflip does NOT resize dynamically, so we force a full   */
+    /*  remount via a React `key` derived from the dimensions.           */
+    /* ---------------------------------------------------------------- */
+    const measure = useCallback(() => {
+        const el = sizerRef.current;
         if (!el) return;
 
-        // Initial compute with a small delay for modal layout to settle
-        const timer = setTimeout(computeDimensions, 50);
+        const w = el.clientWidth;
+        const h = el.clientHeight;
+        if (w === 0 || h === 0) return;
 
-        const observer = new ResizeObserver(() => {
-            computeDimensions();
+        const mobile = w < 768;
+        setIsMobile(mobile);
+
+        // Mobile: single page (full width) | Desktop: double-page spread (half width)
+        let pageW = mobile ? w : Math.floor(w / 2);
+        // Slide images are 16:9 — compute page height from width
+        let pageH = Math.floor(pageW * (9 / 16));
+
+        // If the computed height exceeds available space, fit to height instead
+        if (pageH > h) {
+            pageH = h;
+            pageW = Math.floor(pageH * (16 / 9));
+        }
+
+        setDims((prev) => {
+            // Only update if values actually changed to avoid unnecessary remounts
+            if (prev && prev.width === pageW && prev.height === pageH) return prev;
+            return { width: pageW, height: pageH };
         });
-        observer.observe(el);
+    }, []);
+
+    /* ---------------------------------------------------------------- */
+    /*  Observe the sizer with ResizeObserver for robust sizing           */
+    /* ---------------------------------------------------------------- */
+    useEffect(() => {
+        const el = sizerRef.current;
+        if (!el) return;
+
+        // Measure immediately, then again after a short delay (modal animation)
+        measure();
+        const t1 = setTimeout(measure, 100);
+        const t2 = setTimeout(measure, 300);
+
+        const ro = new ResizeObserver(measure);
+        ro.observe(el);
 
         return () => {
-            clearTimeout(timer);
-            observer.disconnect();
+            clearTimeout(t1);
+            clearTimeout(t2);
+            ro.disconnect();
         };
-    }, [computeDimensions]);
+    }, [measure]);
 
-    /* ---------- Navigation handlers ----------------------------------- */
+    /* ---------------------------------------------------------------- */
+    /*  Navigation                                                       */
+    /* ---------------------------------------------------------------- */
     const goToPrev = useCallback(() => {
         flipBookRef.current?.pageFlip()?.flipPrev();
     }, []);
@@ -100,7 +118,6 @@ export const FlipBook: React.FC<FlipBookProps> = ({ pages }) => {
         setCurrentPage(e.data);
     }, []);
 
-    /* ---------- Keyboard navigation ----------------------------------- */
     useEffect(() => {
         const handleKey = (e: KeyboardEvent) => {
             if (e.key === 'ArrowLeft') goToPrev();
@@ -110,7 +127,9 @@ export const FlipBook: React.FC<FlipBookProps> = ({ pages }) => {
         return () => window.removeEventListener('keydown', handleKey);
     }, [goToPrev, goToNext]);
 
-    /* ---------- Empty guard ------------------------------------------- */
+    /* ---------------------------------------------------------------- */
+    /*  Empty guard                                                      */
+    /* ---------------------------------------------------------------- */
     if (totalPages === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-16 gap-3">
@@ -119,21 +138,27 @@ export const FlipBook: React.FC<FlipBookProps> = ({ pages }) => {
         );
     }
 
-    /* ---------- Render ------------------------------------------------ */
+    /* ---------------------------------------------------------------- */
+    /*  Render                                                           */
+    /* ---------------------------------------------------------------- */
     return (
         <div className="flipbook-outer">
-            {/* This wrapper measures available space */}
-            <div className="flipbook-sizer" ref={containerRef}>
-                {dimensions && (
+            {/* The sizer has a fixed CSS height — we measure it, then render
+          the flipbook inside with matching pixel dimensions. The `key`
+          forces a full remount whenever size changes so react-pageflip
+          picks up the new dimensions. */}
+            <div className="flipbook-sizer" ref={sizerRef}>
+                {dims && (
                     <HTMLFlipBook
+                        key={`${dims.width}x${dims.height}`}
                         ref={flipBookRef}
-                        width={dimensions.width}
-                        height={dimensions.height}
+                        width={dims.width}
+                        height={dims.height}
                         size="fixed"
-                        minWidth={200}
+                        minWidth={100}
                         maxWidth={2000}
-                        minHeight={120}
-                        maxHeight={1200}
+                        minHeight={100}
+                        maxHeight={1500}
                         showCover={true}
                         mobileScrollSupport={true}
                         onFlip={onFlip}
@@ -142,7 +167,7 @@ export const FlipBook: React.FC<FlipBookProps> = ({ pages }) => {
                         startPage={0}
                         drawShadow={true}
                         flippingTime={600}
-                        usePortrait={false}
+                        usePortrait={isMobile}
                         startZIndex={0}
                         autoSize={false}
                         maxShadowOpacity={0.5}

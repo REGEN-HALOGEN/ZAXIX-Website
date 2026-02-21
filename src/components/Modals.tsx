@@ -611,7 +611,7 @@ export const BrochureModal = ({ isOpen, onOpenChange }: BrochureModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className={showBrochure ? "sm:max-w-[95vw] lg:max-w-[1200px]" : "sm:max-w-[450px]"}>
+      <DialogContent className={showBrochure ? "max-w-[100vw] sm:max-w-[95vw] lg:max-w-[1200px] h-[90vh] sm:h-auto" : "sm:max-w-[450px]"}>
         {showBrochure ? (
           <>
             <DialogHeader>
