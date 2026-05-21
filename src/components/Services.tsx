@@ -154,7 +154,7 @@ const Services = () => {
                     className="h-full"
                   >
                     <Card
-                      className="overflow-hidden flex flex-col transition-shadow hover:shadow-lg h-full"
+                      className={`overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl h-full ${product.tag === 'Newly Launched' ? 'border-primary/50 ring-1 ring-primary/20 shadow-[0_0_15px_rgba(234,88,12,0.15)]' : ''}`}
                     >
                       <div className="relative h-56 sm:h-64 bg-background flex-shrink-0">
                         <Image
@@ -165,7 +165,12 @@ const Services = () => {
                           sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
                           priority={false}
                         />
-                        <div className="absolute top-3 right-3">
+                        <div className="absolute top-3 right-3 flex flex-col gap-2 items-end">
+                          {product.tag && (
+                            <Badge className="bg-primary hover:bg-primary text-primary-foreground animate-pulse border-none shadow-[0_0_10px_rgba(234,106,20,0.5)]">
+                              {product.tag}
+                            </Badge>
+                          )}
                           <Badge variant="secondary">{activeSystem.label}</Badge>
                         </div>
                       </div>

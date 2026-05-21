@@ -5,6 +5,7 @@ export interface Product {
   imageSrc?: string;
   description: string;
   highlights?: string[];
+  tag?: string;
 }
 
 const PRODUCT_IMAGES = {
@@ -24,6 +25,7 @@ const PRODUCT_IMAGES = {
     vial: "/Product/ZAxis%20Pro/Standard%20Vial%20line/product69.png",
     cartridge: "/Product/ZAxis%20Pro/Both%20Ends%20open%20cartridge%20filling%20system/product6.png",
     rAndDFilling: "/Product/ZAxis%20Pro/R%26D%20Filling%20machines/product9.png",
+    dualChamberPfs: "/Product/ZAxis%20Pro/Dual%20Chamber%20PFS%20Filling%20Machine/newproduct.png",
   },
   pre: {
     isolator: "/Product/ZAxis%20Pre/Positive%20pressure%20isolator%20for%20injectables/product434.png",
@@ -33,7 +35,6 @@ const PRODUCT_IMAGES = {
   },
   core: {
     tunnels: "/Product/ZAxis%20Core/sterilizing%20%26%20Depyrogenation%20Tunnels/product1.png",
-    dualChamberPfs: "/Product/ZAxis%20Core/Dual%20Chamber%20PFS%20Filling%20Machine/newproduct.png",
   },
 } as const;
 
@@ -55,6 +56,19 @@ export const SYSTEMS: Record<
     title: "Z Axis Pro Systems",
     subtitle: "Advanced Aseptic Fill Finish Systems",
     products: [
+      {
+        title: "Dual Chamber Pre-Filled Syringe Filling Machine",
+        imageSrc: PRODUCT_IMAGES.pro.dualChamberPfs,
+        description: "Z Axis Pharmachine introduces a next-generation Dual Chamber Pre-Filled Syringe Filling Machine, designed for aseptic processing of Liquid + Liquid and Powder + Liquid. Built for high-performance sterile environments, the system ensures accurate dosing, chamber integrity, and seamless automation.",
+        tag: "Newly Launched",
+        highlights: [
+          "High Precision Filling: Peristaltic & auger-based dosing with ±0.5% accuracy",
+          "Grade A Aseptic Compatibility: Designed for O-RABS / Isolator integration",
+          "Sequential Stoppering & Sealing: Ensures complete separation & product integrity",
+          "Advanced Automation: PLC–SCADA system with 21 CFR Part 11 compliance",
+          "Flexible & Modular Architecture: Quick changeover across syringe formats",
+        ],
+      },
       {
         title: "R & D filling & closing machines for PFS, vials, cartridges, bottles",
         imageSrc: PRODUCT_IMAGES.pro.rAndDClosing,
@@ -264,18 +278,6 @@ export const SYSTEMS: Record<
           "Uniform temperature control and process repeatability",
           "Compliance with GMP, FDA, and EU GMP (Annex 1)",
           "Suitable for vials, ampoules, PFS, cartridges, and bottles",
-        ],
-      },
-      {
-        title: "Dual Chamber Pre-Filled Syringe Filling Machine",
-        imageSrc: PRODUCT_IMAGES.core.dualChamberPfs,
-        description: "Z Axis Pharmachine introduces a next-generation Dual Chamber Pre-Filled Syringe Filling Machine, designed for aseptic processing of Liquid + Liquid and Powder + Liquid. Built for high-performance sterile environments, the system ensures accurate dosing, chamber integrity, and seamless automation.",
-        highlights: [
-          "High Precision Filling: Peristaltic & auger-based dosing with ±0.5% accuracy",
-          "Grade A Aseptic Compatibility: Designed for O-RABS / Isolator integration",
-          "Sequential Stoppering & Sealing: Ensures complete separation & product integrity",
-          "Advanced Automation: PLC–SCADA system with 21 CFR Part 11 compliance",
-          "Flexible & Modular Architecture: Quick changeover across syringe formats",
         ],
       },
     ],

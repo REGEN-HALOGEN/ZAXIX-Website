@@ -417,6 +417,7 @@ interface ProductDetailModalProps {
     imageSrc?: string;
     description: string;
     highlights?: string[];
+    tag?: string;
   } | null;
   systemKey: SystemKey;
   systemLabel: string;
@@ -452,6 +453,11 @@ export const ProductDetailModal = ({
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
               Z Axis {systemLabel}
             </span>
+            {product.tag && (
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                {product.tag}
+              </span>
+            )}
           </DialogDescription>
         </DialogHeader>
 

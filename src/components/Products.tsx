@@ -22,6 +22,7 @@ const PRODUCT_IMAGES = {
     vial: "/Product/ZAxis%20Pro/Standard%20Vial%20line/product69.png",
     cartridge: "/Product/ZAxis%20Pro/Both%20Ends%20open%20cartridge%20filling%20system/product6.png",
     rAndDFilling: "/Product/ZAxis%20Pro/R%26D%20Filling%20machines/product9.png",
+    dualChamberPfs: "/Product/ZAxis%20Pro/Dual%20Chamber%20PFS%20Filling%20Machine/newproduct.png",
   },
   pre: {
     isolator: "/Product/ZAxis%20Pre/Positive%20pressure%20isolator%20for%20injectables/product434.png",
@@ -32,6 +33,18 @@ const PRODUCT_IMAGES = {
 } as const;
 
 const productsData = [
+  {
+    category: "fill-finish",
+    badge: "Newly Launched",
+    title: "Dual Chamber PFS Filling Machine",
+    specs: [
+      { label: "Formats", value: "Liquid + Liquid, Powder + Liquid" },
+      { label: "Accuracy", value: "±0.5% with peristaltic/auger dosing" },
+      { label: "Integration", value: "Grade A O-RABS / Isolator" },
+      { label: "Compliance", value: "21 CFR Part 11 PLC-SCADA" },
+    ],
+    image: PRODUCT_IMAGES.pro.dualChamberPfs,
+  },
   {
     category: "fill-finish",
     badge: "R&D",
@@ -220,7 +233,7 @@ const Products = () => {
                 whileHover={{ y: -5 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card className="overflow-hidden group transition-shadow hover:shadow-lg">
+                <Card className={`overflow-hidden group transition-all duration-300 hover:shadow-xl ${product.badge === 'Newly Launched' ? 'border-primary/50 ring-1 ring-primary/20 shadow-[0_0_15px_rgba(234,88,12,0.15)]' : ''}`}>
                   <div className="relative h-64 bg-background">
                     <Image
                       src={product.image}
@@ -230,7 +243,7 @@ const Products = () => {
                       sizes="(min-width: 1024px) 384px, (min-width: 768px) 50vw, 100vw"
                       priority={index < 3}
                     />
-                    <Badge className="absolute top-4 right-4">{product.badge}</Badge>
+                    <Badge className={`absolute top-4 right-4 ${product.badge === 'Newly Launched' ? 'animate-pulse bg-primary hover:bg-primary shadow-[0_0_10px_rgba(234,88,12,0.5)] text-primary-foreground' : ''}`}>{product.badge}</Badge>
                   </div>
                   <CardHeader>
                     <CardTitle>{product.title}</CardTitle>
