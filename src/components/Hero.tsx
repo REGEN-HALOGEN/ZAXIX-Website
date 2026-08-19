@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
 import { QuoteModal } from './Modals';
@@ -44,6 +44,7 @@ const Hero = () => {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
   const { isLoaded } = useLoading();
+  const welcomeVideoRef = useRef<HTMLVideoElement | null>(null);
 
   const sanskritText =
     'यन्त्राणि देवतासदृशानि, यतः प्राणरक्षा भवति।\nऔषधं यथोचितं रक्ष्यते, तेन लोकः सुखी भवेत्॥';
@@ -95,6 +96,27 @@ const Hero = () => {
 
     return () => window.clearInterval(interval);
   }, [prefersReducedMotion, translationGraphemes.length, isLoaded, typedCount, sanskritGraphemes.length]);
+
+  useEffect(() => {
+    const video = welcomeVideoRef.current;
+    if (!video || !isLoaded || prefersReducedMotion) {
+      return;
+    }
+
+    const startPlayback = () => {
+      void video.play().catch(() => {
+        // Autoplay can still be blocked by the browser; the video will remain visible.
+      });
+    };
+
+    if (video.readyState >= 3) {
+      startPlayback();
+      return;
+    }
+
+    video.addEventListener('canplay', startPlayback, { once: true });
+    return () => video.removeEventListener('canplay', startPlayback);
+  }, [isLoaded, prefersReducedMotion]);
 
   const typedSanskrit = prefersReducedMotion
     ? sanskritText
@@ -154,12 +176,13 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.3 }}
             >
               <video
+                ref={welcomeVideoRef}
                 className="w-full max-w-xl h-auto rounded-2xl shadow-lg"
                 autoPlay
                 muted
                 loop
                 playsInline
-                preload="metadata"
+                preload="auto"
                 aria-label="Welcome animation"
               >
                 <source src="/welcome.mp4" type="video/mp4" />
