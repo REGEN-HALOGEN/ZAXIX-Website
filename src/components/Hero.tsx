@@ -146,18 +146,24 @@ const Hero = () => {
                 >Z</span> AXIS PHARMACHINE CONCEPTS (INDIA)
               </span>
             </motion.h1>
-            {/* Welcome GIF - blended with background */}
+            {/* Welcome video - lightweight autoplay loop */}
             <motion.div
               className="flex justify-center mb-10"
               initial={{ opacity: 0, y: 20 }}
               animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              <img
-                src="/welcome.gif"
-                alt="Welcome animation"
+              <video
                 className="w-full max-w-xl h-auto rounded-2xl shadow-lg"
-              />
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-label="Welcome animation"
+              >
+                <source src="/welcome.mp4" type="video/mp4" />
+              </video>
             </motion.div>
             <p className="text-primary font-bold leading-relaxed tracking-wide text-lg sm:text-2xl lg:text-4xl max-w-5xl mx-auto mb-6 px-2">
               <span className="sr-only">{sanskritText}</span>
