@@ -37,6 +37,10 @@ const Footer = () => {
             <p className="text-muted-foreground max-w-md">
               Next-edge pharmaceutical packaging systems with a Pharma 4.0, sterile, compliant, automation-first philosophy.
             </p>
+            
+            <p className="text-muted-foreground text-sm">
+              <span className="font-semibold text-primary">GSTIN:</span> 24APEPY0678R1ZZ
+            </p>
 
             <div className="flex items-center gap-4">
               <Link href="https://www.linkedin.com/in/z-axis-pharmachine-concepts-india-41b323392?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" className="p-2 bg-primary/10 rounded-full hover:bg-primary hover:text-white transition-all duration-300">

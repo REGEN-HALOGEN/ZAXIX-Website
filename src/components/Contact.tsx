@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Phone, Mail, Send } from 'lucide-react';
+import { MapPin, Phone, Mail, Send, Building2 } from 'lucide-react';
 import { SYSTEMS } from '@/lib/zaxis-systems';
 import ScrollFloat from '@/components/ui/ScrollFloat';
 
@@ -31,6 +31,13 @@ const contactMethods = [
     lines: [
       "wellness@zaxispharmachine.com",
       "Website: www.zaxispharmchine.com",
+    ],
+  },
+  {
+    icon: <Building2 className="h-6 w-6 text-primary" />,
+    title: "GST Number",
+    lines: [
+      "GSTIN: 24APEPY0678R1ZZ",
     ],
   },
 ];
